@@ -11,7 +11,7 @@
     {% for tab in product.metafields.custom.product_tabs.value %}
       <div class="mf-mo--tab-content" style="margin-top: 32px">
         <div>TAB CONTENT: {{ forloop.index }}</div>
-        <div>{{ tab.text }}</div>
+        <div>{{ tab.text | metafield_tag }}</div>
       </div>
     {% endfor %}
   </div>
