@@ -1,0 +1,33 @@
+{{ 'hero.css' | asset_url | stylesheet_tag }}
+
+<div class="hero">
+  <div class="hero--container">
+    <h1 class="hero--heading">FUEL STRENGTH. HYDRATION.<br>RECOVERY — WITHOUT POWDERS.</h1>
+    <p class="hero--description">Science-formulated performance gummies delivering Creatine, BCAAs and Collagen in precise daily doses your body actually uses.</p>
+    <div class="hero--buttons">
+      <button class="hero--button hero--button-primary">Shop Gummies</button>
+      <button class="hero--button hero--button-secondary">View The Science</button>
+    </div>
+    <div class="hero--social-proof">
+      <div class="hero--stars">
+        <span class="hero--star">★</span>
+        <span class="hero--star">★</span>
+        <span class="hero--star">★</span>
+        <span class="hero--star">★</span>
+        <span class="hero--star">★</span>
+      </div>
+      <span>4.9 | 5000+ reviews | 50k+ clients</span>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Hero",
+  "presets": [
+    {
+      "name": "Hero"
+    }
+  ]
+}
+{% endschema %}
