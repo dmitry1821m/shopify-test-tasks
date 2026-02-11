@@ -82,6 +82,11 @@
         "padding_bottom": 12
       }
     },
+    "mf_mo_tabs_KEbNBg": {
+      "type": "mf-mo--tabs",
+      "name": "MF MO Tabs",
+      "settings": {}
+    },
     "related-products": {
       "type": "related-products",
       "settings": {
@@ -103,6 +108,7 @@
   },
   "order": [
     "main",
+    "mf_mo_tabs_KEbNBg",
     "related-products"
   ]
 }

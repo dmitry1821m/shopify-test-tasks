@@ -1,0 +1,29 @@
+<div class="mf-mo--tabs">
+  <div class="mf-mo--menu">
+    {% for tab in product.metafields.custom.product_tabs.value %}
+      <div class="mf-mo--menu-item" style="margin-top: 32px">
+        <div>TAB BUTTON: {{ forloop.index }}</div>
+        <div>{{ tab.title }}</div>
+      </div>
+    {% endfor %}
+  </div>
+  <div class="mf-mo--tab-contents">
+    {% for tab in product.metafields.custom.product_tabs.value %}
+      <div class="mf-mo--tab-content" style="margin-top: 32px">
+        <div>TAB CONTENT: {{ forloop.index }}</div>
+        <div>{{ tab.text }}</div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "MF MO Tabs",
+  "presets": [
+    {
+      "name": "MF MO Tabs",
+    }
+  ]
+}
+{% endschema %}
