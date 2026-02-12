@@ -1,0 +1,56 @@
+{{ 'music-hero.css' | asset_url | stylesheet_tag }}
+
+{% assign background = section.settings.background_image %}
+
+<section
+  class="music-hero"
+  {% if background %} style="background-image: url('{{ background | image_url }}');" {% endif %}
+>
+  <div class="music-hero--container">
+    <div class="music-hero--content">
+      <h1 class="music-hero--heading">{{ section.settings.heading | newline_to_br }}</h1>
+      <p class="music-hero--description">{{ section.settings.description }}</p>
+      {% if section.settings.button_link %}
+        <a href="{{ section.settings.button_link }}" class="music-hero--button">
+          {{ section.settings.button_text }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Music Hero",
+  "settings": [
+    {
+      "id": "background_image",
+      "label": "Background Image",
+      "type": "image_picker"
+    },
+    {
+      "default": "Radeckt: Global\nsound meets\nadvanced digital\nstrategy",
+      "id": "heading",
+      "label": "Heading",
+      "type": "text"
+    },
+    {
+      "default": "From melodic house to indie dance & techno - Radeckt delivers hypnotic club anthems and heads-down floor fillers, supported by the world's most influential selectors.",
+      "id": "description",
+      "label": "Description",
+      "type": "textarea"
+    },
+    {
+      "default": "Get Early Access",
+      "id": "button_text",
+      "label": "Button Text",
+      "type": "text"
+    },
+    {
+      "id": "button_link",
+      "label": "Button Link",
+      "type": "url"
+    }
+  ]
+}
+{% endschema %}

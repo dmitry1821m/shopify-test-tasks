@@ -1,0 +1,46 @@
+.music-hero {
+  background-color: #000;
+  background-size: cover;
+  padding: 0;
+  width: 100%;
+}
+
+.music-hero--container {
+  margin: 0 auto;
+  padding: 118px 20px 78px;
+  width: 1000px;
+}
+
+.music-hero--content {
+  color: #fff;
+}
+
+.music-hero--heading {
+  color: #fff;
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 32px;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.music-hero--description {
+  font-size: 10px;
+  line-height: 14px;
+  margin: 10px 0 0;
+  width: 280px;
+}
+
+.music-hero--button {
+  background-color: #fff;
+  border: none;
+  border-radius: 50px;
+  color: #000;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 1px;
+  margin-top: 12px;
+  padding: 10px 12px;
+  text-decoration: none;
+}
