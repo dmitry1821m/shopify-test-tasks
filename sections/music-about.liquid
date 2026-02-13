@@ -1,11 +1,80 @@
 {{ 'music-about.css' | asset_url | stylesheet_tag }}
 
+{% assign left_image = section.settings.column_left_image %}
+{% assign right_image = section.settings.column_right_image %}
+
 <section class="music-about">
-  music-about
+  <div class="music-about--container">
+    <div 
+      class="music-about--column music-about--column-left"
+      {% if left_image %} style="background-image: url('{{ left_image | image_url }}')" {% endif %}
+    >
+      <h3 class="music-about--heading-left">{{ section.settings.column_left_heading }}</h3>
+    </div>
+    <div class="music-about--column">
+      {% if right_image %}
+        <img
+          src="{{ right_image | image_url }}"
+          class="music-about--image"
+          loading="lazy"
+          width="216px"
+          height="120px"
+        >
+      {% endif %}
+      <h3 class="music-about--heading-right">{{ section.settings.column_right_heading }}</h3>
+      <p class="music-about--description">{{ section.settings.column_right_description | newline_to_br }}</p>
+      {% if section.settings.button_link %}
+        <a href="{{ section.settings.button_link }}" class="music-about--button">
+          {{ section.settings.button_text }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
 </section>
 
 {% schema %}
 {
-  "name": "Music About"
+  "name": "Music About",
+  "settings": [
+    {
+      "id": "column_left_image",
+      "label": "Left Column Background Image",
+      "type": "image_picker"
+    },
+    {
+      "default": "Radeckt",
+      "id": "column_left_heading",
+      "label": "Left Column Heading",
+      "type": "text"
+    },
+    {
+      "id": "column_right_image",
+      "label": "Right Column Image",
+      "type": "image_picker"
+    },
+    {
+      "default": "About Radeckt",
+      "id": "column_right_heading",
+      "label": "Right Column Heading",
+      "type": "text"
+    },
+    {
+      "default": "A rising force in the underground house scene, Radeckt blends melodic house, indie dance and techno into hypnotic, club-driven records played worldwide.\n\nHis releases span key labels including Human by Default (Bedouin), Marginalia (Eli & Fur), AZZUR, Renaissance, Out of Options and Ultra, with standout tracks like Otun, Radiate (Remix) and Take Down.",
+      "id": "column_right_description",
+      "label": "Right Column Description",
+      "type": "textarea"
+    },
+    {
+      "default": "About",
+      "id": "button_text",
+      "label": "Button Text",
+      "type": "text"
+    },
+    {
+      "id": "button_link",
+      "label": "Button Link",
+      "type": "url"
+    }
+  ]
 }
 {% endschema %}

@@ -20,10 +20,20 @@
       }
     },
     "music_about": {
-      "type": "music-about"
+      "type": "music-about",
+      "settings": {
+        "column_left_image": "shopify://shop_images/person-stands-on-rocks-poking-out-of-the-ocean-shoreline.jpg",
+        "column_left_heading": "Radeckt",
+        "column_right_image": "shopify://shop_images/person-fishing-on-the-beach-is-silhouetted-at-sunset.jpg",
+        "column_right_heading": "About Radeckt",
+        "column_right_description": "A rising force in the underground house scene, Radeckt blends melodic house, indie dance and techno into hypnotic, club-driven records played worldwide.\n\nHis releases span key labels including Human by Default (Bedouin), Marginalia (Eli & Fur), AZZUR, Renaissance, Out of Options and Ultra, with standout tracks like Otun, Radiate (Remix) and Take Down.",
+        "button_text": "About",
+        "button_link": "shopify://pages/contact"
+      }
     },
     "music_releases": {
-      "type": "music-releases"
+      "type": "music-releases",
+      "settings": {}
     },
     "featured_collection": {
       "type": "featured-collection",

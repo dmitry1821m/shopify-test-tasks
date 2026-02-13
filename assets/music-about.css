@@ -1,0 +1,68 @@
+.music-about {
+  width: 100%;
+}
+
+.music-about--container {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  max-width: 1000px;
+  padding: 30px 20px 40px;
+  width: 100%;
+}
+
+.music-about--column {
+  width: 370px;
+}
+
+.music-about--column-left {
+  align-items: flex-end;
+  background-color: #000;
+  background-position: center;
+  background-size: cover;
+  display: flex;
+  padding: 20px 18px;
+  position: relative;
+}
+
+.music-about--heading-left {
+  color: #fff;
+  font-size: 42px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.music-about--image {
+  display: block;
+  margin-bottom: 104px;
+  height: 120px;
+  width: 216px;
+}
+
+.music-about--heading-right {
+  color: #000;
+  font-size: 32px;
+  line-height: 1.4;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.music-about--description {
+  color: #000;
+  font-size: 12px;
+  line-height: 14px;
+  margin: 0;
+}
+
+.music-about--button {
+  background-color: transparent;
+  border: 1px solid #000;
+  border-radius: 9999px;
+  color: #000;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 14px;
+  margin-top: 22px;
+  padding: 4px 34px;
+  text-decoration: none;
+}
