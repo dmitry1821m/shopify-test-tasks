@@ -1,0 +1,90 @@
+{{ 'sport-products.css' | asset_url | stylesheet_tag }}
+
+<section class="sport-products">
+  <div class="sport-products--container">
+    {% if section.settings.heading %}
+      <h3 class="sport-products--heading">{{ section.settings.heading }}</h3>
+    {% endif %}
+    <div class="sport-products--blocks">
+      {% for block in section.blocks limit: 4 %}
+        <div class="sport-products--block">
+          {% case block.type %}
+            {% when 'product_block' %}
+              <div class="sport-products--product">
+                {% if block.settings.image %}
+                  {{
+                    block.settings.image
+                    | image_url: width: 230
+                    | image_tag: class: 'sport-products--product-image', loading: 'lazy'
+                  }}
+                {% endif %}
+              </div>
+            {% when 'info_block' %}
+              <div class="sport-products--info">
+                {% if block.settings.icon %}
+                  <span class="sport-products--info-icon">{{ block.settings.icon }}</span>
+                {% endif %}
+                {% if block.settings.title %}
+                  <p class="sport-products--info-title">{{ block.settings.title }}</p>
+                {% endif %}
+                {% if block.settings.description %}
+                  <p class="sport-products--info-description">{{ block.settings.description }}</p>
+                {% endif %}
+              </div>
+          {% endcase %}
+        </div>
+      {% endfor %}
+    </div>
+    <div class="sport-products--dots" aria-hidden="true">
+      <span class="sport-products--dot sport-products--dot--active"></span>
+      <span class="sport-products--dot sport-products--dot"></span>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Sport Products",
+  "settings": [
+    {
+      "id": "heading",
+      "label": "Heading",
+      "type": "text"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Product Block",
+      "type": "product_block",
+      "settings": [
+        {
+          "id": "image",
+          "label": "Image",
+          "type": "image_picker"
+        }
+      ]
+    },
+    {
+      "name": "Info Block",
+      "type": "info_block",
+      "settings": [
+        {
+          "id": "icon",
+          "label": "Icon",
+          "type": "text"
+        },
+        {
+          "id": "title",
+          "label": "Title",
+          "type": "text"
+        },
+        {
+          "id": "description",
+          "label": "Description",
+          "type": "textarea"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -9,6 +9,80 @@
  */
 {
   "sections": {
+    "sport_products": {
+      "type": "sport-products",
+      "blocks": {
+        "block_1": {
+          "type": "product_block",
+          "settings": {
+            "image": "shopify://shop_images/fall-vegetable-box.jpg"
+          }
+        },
+        "block_2": {
+          "type": "info_block",
+          "settings": {
+            "icon": "✓",
+            "title": "Science-formulated",
+            "description": "BCAAs and Collagen in precise daily doses your body actually uses."
+          }
+        },
+        "block_3": {
+          "type": "product_block",
+          "settings": {
+            "image": "shopify://shop_images/close-up-of-a-pine-tree-showing-texture-of-pine-needles.jpg"
+          }
+        },
+        "block_4": {
+          "type": "info_block",
+          "settings": {
+            "icon": "☆",
+            "title": "Made for daily performance",
+            "description": "Athlete approved"
+          }
+        },
+        "block_5": {
+          "type": "product_block",
+          "settings": {
+            "image": "shopify://shop_images/fall-vegetable-box.jpg"
+          }
+        },
+        "block_6": {
+          "type": "info_block",
+          "settings": {
+            "icon": "☂︎",
+            "title": "What is Lorem Ipsum?",
+            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+          }
+        },
+        "block_7": {
+          "type": "product_block",
+          "settings": {
+            "image": "shopify://shop_images/close-up-of-a-pine-tree-showing-texture-of-pine-needles.jpg"
+          }
+        },
+        "block_8": {
+          "type": "info_block",
+          "settings": {
+            "icon": "♨︎",
+            "title": "Why do we use it?",
+            "description": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout."
+          }
+        },
+      },
+      "block_order": [
+        "block_1",
+        "block_2",
+        "block_3",
+        "block_4",
+        "block_5",
+        "block_6",
+        "block_7",
+        "block_8"
+      ],
+      "settings": {
+        "heading": "Thousands switching from powders to performance gummies"
+      }
+    },
     "sport_blocks": {
       "type": "sport-blocks",
       "blocks": {
@@ -153,6 +227,7 @@
     }
   },
   "order": [
+    "sport_products",
     "sport_blocks",
     "music_hero",
     "music_about",
