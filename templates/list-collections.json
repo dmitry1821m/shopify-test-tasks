@@ -11,16 +11,13 @@
   "sections": {
     "main": {
       "type": "main-list-collections",
-      "settings": {
-        "title": "Collections",
-        "sort": "alphabetical",
-        "image_ratio": "square",
-        "columns_desktop": 3,
-        "columns_mobile": "2"
-      }
+      "settings": {}
+    },
+    "collage": {
+      "type": "main-list-collections-collage",
+      "disabled": true,
+      "settings": {}
     }
   },
-  "order": [
-    "main"
-  ]
+  "order": ["main", "collage"]
 }

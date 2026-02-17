@@ -1,0 +1,99 @@
+/* Bar: blue background, single row by default */
+.dev-feature-bar {
+  background: #4f5eff;
+  padding: 10px 0;
+}
+
+/* Scroll container: horizontal scroll when content overflows; scrollbar hidden, scroll still works */
+.dev-feature-bar__scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  touch-action: pan-x;
+  cursor: grab;
+}
+
+.dev-feature-bar__scroll:active {
+  cursor: grabbing;
+}
+
+.dev-feature-bar__scroll.is-dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.dev-feature-bar__scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Inner: centered by default; when overflow (has-overflow) left-align so only right is cut */
+.dev-feature-bar__inner {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+  min-width: min-content;
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+
+.dev-feature-bar__scroll.has-overflow .dev-feature-bar__inner {
+  justify-content: flex-start;
+}
+
+.dev-feature-bar__scroll.has-overflow .dev-feature-bar__item:last-child {
+  padding-right: 48px;
+}
+
+@media (max-width: 989px) {
+  .dev-feature-bar__scroll.has-overflow .dev-feature-bar__item:last-child {
+    padding-right: 24px;
+  }
+}
+
+@media (max-width: 989px) {
+  .dev-feature-bar__inner {
+    padding: 0 16px;
+  }
+}
+
+/* Each feature block: icon + label */
+.dev-feature-bar__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.dev-feature-bar__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dev-feature-bar__icon-img {
+  display: block;
+  /* width: 24px;
+  height: 24px; */
+  width: 100%;
+  height: 100%;
+  max-height: 45px;
+  max-width: 42px;
+  object-fit: contain;
+}
+
+.dev-feature-bar__label {
+  color: #fcf8ec;
+  text-align: center;
+  font-family: "Azeret SemiMono", monospace;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-transform: uppercase;
+}

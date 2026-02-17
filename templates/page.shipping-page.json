@@ -1,0 +1,107 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "max_width": "medium",
+        "display_on_card": false,
+        "color_scheme": "",
+        "use_gradient_background": false
+      }
+    },
+    "faq_aEpVkJ": {
+      "type": "faq",
+      "blocks": {
+        "question_d3TAmh": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "title": "What shipping options are available?",
+            "answer": "<p>Insiders receive complimentary standard ground shipping within the U.S. </p><p>All customers can select from three shipping options at checkout:</p><ul><li>Ground Shipping (3–7 business days)</li><li>2-Day Air (2 business days)</li><li>Next Day Air (1 business day)</li></ul><p>Shipping costs are calculated at checkout based on the option you choose and your location. Availability and delivery times will vary depend on your location.</p>"
+          }
+        },
+        "question_pgViDe": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "title": "When will my order ship?",
+            "answer": "<p>Orders are typically processed within 1–3 business days. We ship Monday–Friday and do not ship on weekends or federal holidays. Once your order ships, you’ll receive a tracking number via email.</p>"
+          }
+        },
+        "question_gVLbLp": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "title": "Can I update my shipping address after my order is placed?",
+            "answer": "<p>We can update your shipping address before your order has shipped. Once the order has shipped, we are unable to make changes. </p><p>Please contact <a><strong>hello@prowloutdoors.com</strong></a> as soon as possible if you need to update your address. Always double-check your shipping details before confirming your order.</p>"
+          }
+        },
+        "question_9rmTyX": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "title": "How will I know if my order has shipped?",
+            "answer": "<p>You will receive a shipping confirmation email once your items are shipped.</p><p>We include the shipment’s tracking number so you can follow your items on their journey to you.</p>"
+          }
+        },
+        "question_rmqkee": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "title": "Do you ship internationally?",
+            "answer": "<p>We currently only ship within the United States and hope to expand gloablly in the future.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_d3TAmh",
+        "question_pgViDe",
+        "question_gVLbLp",
+        "question_9rmTyX",
+        "question_rmqkee"
+      ],
+      "settings": {
+        "display_on_card": false,
+        "heading_text_style": "heading",
+        "two_columns_desktop": false,
+        "title": "Shipping",
+        "richtext": "",
+        "color_scheme": "",
+        "use_gradient_background": false
+      }
+    },
+    "rich_text_ygF7yA": {
+      "type": "rich-text",
+      "custom_css": [
+        ".rte h3 {font-family: \"Perfectly Nineties\"; text-transform: none;}",
+        ".rte p {font-family: \"Dallas\";}"
+      ],
+      "settings": {
+        "title": "READY TO SHOP HEADLINE?",
+        "heading_size": "heading-standard",
+        "rich_text": "<h3>Additional copy here <em>nudging </em>the buyer to <em>start</em> shopping</h3><p><strong>Or use this sans serif font</strong></p>",
+        "display_on_card": false,
+        "content_width_desktop": "lg:w-2/3",
+        "button_link": "shopify://products/merino-wool",
+        "button_label": "SHOP NOW",
+        "color_scheme": "scheme-430c6038-8c15-4711-a4d5-ce6c88699a21",
+        "use_gradient_background": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "faq_aEpVkJ",
+    "rich_text_ygF7yA"
+  ]
+}

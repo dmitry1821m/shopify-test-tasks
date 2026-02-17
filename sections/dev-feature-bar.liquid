@@ -1,0 +1,118 @@
+{%- liquid
+  assign feature_blocks = section.blocks | where: 'type', 'feature'
+-%}
+
+{{ 'dev-feature-bar.css' | asset_url | stylesheet_tag }}
+
+<section class="dev-feature-bar" id="DevFeatureBar-{{ section.id }}">
+  <div class="dev-feature-bar__scroll" id="dev-feature-bar-scroll-{{ section.id }}">
+    <div class="dev-feature-bar__inner">
+      {%- for block in feature_blocks -%}
+        {%- assign item_alt = block.settings.label | default: 'Feature' | escape -%}
+        <div class="dev-feature-bar__item" {{ block.shopify_attributes }}>
+          {%- if block.settings.icon != blank -%}
+            <span class="dev-feature-bar__icon">
+              <img
+                src="{{ block.settings.icon | image_url: width: 120 }}"
+                alt="{{ item_alt }}"
+                class="dev-feature-bar__icon-img"
+                loading="lazy"
+                width="120"
+                height="120"
+              >
+            </span>
+          {%- endif -%}
+          {%- if block.settings.label != blank -%}
+            <span class="dev-feature-bar__label">{{ block.settings.label | escape }}</span>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var el = document.getElementById('dev-feature-bar-scroll-{{ section.id }}');
+    if (!el) return;
+    var inner = el.querySelector('.dev-feature-bar__inner');
+    function checkOverflow() {
+      if (inner && el.scrollWidth > el.clientWidth) {
+        el.classList.add('has-overflow');
+      } else {
+        el.classList.remove('has-overflow');
+      }
+    }
+    checkOverflow();
+    if (typeof ResizeObserver !== 'undefined') {
+      new ResizeObserver(checkOverflow).observe(el);
+    }
+    window.addEventListener('resize', checkOverflow);
+    var startX, startScrollLeft;
+    function start(e) {
+      startX = e.pageX ?? e.touches?.[0]?.pageX;
+      startScrollLeft = el.scrollLeft;
+      el.classList.add('is-dragging');
+    }
+    function move(e) {
+      if (!el.classList.contains('is-dragging')) return;
+      var x = e.pageX ?? e.touches?.[0]?.pageX;
+      el.scrollLeft = startScrollLeft + (startX - x);
+    }
+    function end() {
+      el.classList.remove('is-dragging');
+    }
+    el.addEventListener('mousedown', function (e) {
+      if (e.button === 0) {
+        e.preventDefault();
+        start(e);
+      }
+    });
+    document.addEventListener('mousemove', move);
+    document.addEventListener('mouseup', end);
+    document.addEventListener('mouseleave', end);
+    el.addEventListener('touchstart', start, { passive: true });
+    el.addEventListener('touchmove', move, { passive: false });
+    el.addEventListener('touchend', end);
+    el.addEventListener('touchcancel', end);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Dev Feature Bar",
+  "tag": "section",
+  "class": "dev-feature-bar-section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Feature label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Dev Feature Bar",
+      "blocks": [
+        { "type": "feature", "settings": { "label": "ALL DAY COMFORT" } },
+        { "type": "feature", "settings": { "label": "THOUGHTFULLY DESIGNED DETAILS" } },
+        { "type": "feature", "settings": { "label": "MOISTURE-WICKING & ODOR-RESISTANT" } },
+        { "type": "feature", "settings": { "label": "MADE TO MOVE" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

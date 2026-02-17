@@ -1,68 +1,81 @@
-{%- style -%}
-  .section-{{ section.id }}-padding {
-    padding-top: calc({{ section.settings.padding_top }}px * 0.75);
-    padding-bottom: calc({{ section.settings.padding_bottom }}px  * 0.75);
-  }
+<section
+  class="relative overflow-hidden bg-scheme-background text-scheme-text {% if section.settings.use_gradient_background %}bg-scheme-gradient{% endif %} "
+  data-color-scheme="{{ section.settings.color_scheme }}"
+>
+  <div class="section-content {% unless section.settings.full_width %}px-section max-w-site mx-auto py-section-vertical-spacing {% endunless %}">
+    {% if section.settings.title != '' %}
+      <h2 class="inline-heading-rte font-heading heading-standard  heading-style break-words text-center {{ settings.heading_drop_shadow_style }}">
+        {{ section.settings.title }}
+      </h2>
+    {% endif %}
 
-  @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
-    }
-  }
-{%- endstyle -%}
-<div class="color-{{ section.settings.color_scheme }} gradient">
-  <div class="section-{{ section.id }}-padding">
-    {{ section.settings.custom_liquid }}
+    <div
+      {% if section.settings.title != '' %}
+        class="mt-10"
+      {% endif %}
+    >
+      {{ section.settings.custom_liquid }}
+    </div>
   </div>
-</div>
+
+  {%- liquid
+    for block in section.blocks
+      case block.type
+        when 'background_shape'
+          render 'block-background-shape', block: block
+        when 'background_pattern'
+          render 'block-background-pattern', block: block, scheme: section.settings.color_scheme
+      endcase
+    endfor
+  -%}
+</section>
+
+{%- liquid
+  assign stickers = section.blocks | where: 'type', 'sticker'
+  assign shape_dividers = section.blocks | where: 'type', 'shape_divider'
+  for sticker in stickers
+    render 'block-sticker', block: sticker
+  endfor
+  for shape_divider in shape_dividers
+    render 'block-shape-divider', block: shape_divider
+  endfor
+-%}
 
 {% schema %}
 {
-  "name": "t:sections.custom-liquid.name",
-  "tag": "section",
-  "class": "section",
+  "name": "t:sections.custom_liquid.name",
   "settings": [
     {
-      "type": "liquid",
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "t:sections.custom_liquid.settings.title.label",
+      "default": "Custom liquid"
+    },
+    {
       "id": "custom_liquid",
-      "label": "t:sections.custom-liquid.settings.custom_liquid.label",
-      "info": "t:sections.custom-liquid.settings.custom_liquid.info"
+      "type": "liquid",
+      "label": "t:sections.custom_liquid.settings.custom_liquid.label",
+      "info": "t:sections.custom_liquid.settings.custom_liquid.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "t:sections.custom_liquid.settings.full_width.label"
+    },
+    {
+      "type": "header",
+      "content": "t:common.settings.header_color"
     },
     {
       "type": "color_scheme",
       "id": "color_scheme",
-      "label": "t:sections.all.colors.label",
-      "default": "scheme-1"
-    },
-    {
-      "type": "header",
-      "content": "t:sections.all.padding.section_padding_heading"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "t:sections.all.padding.padding_top",
-      "default": 40
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "t:sections.all.padding.padding_bottom",
-      "default": 52
+      "default": "scheme1",
+      "label": "t:common.settings.color_scheme.label"
     }
   ],
   "presets": [
     {
-      "name": "t:sections.custom-liquid.presets.name"
+      "name": "t:sections.custom_liquid.name"
     }
   ]
 }

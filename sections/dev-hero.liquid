@@ -1,0 +1,140 @@
+{%- liquid
+  assign desktop_image = section.settings.desktop_image
+  assign mobile_image = section.settings.mobile_image
+  assign heading = section.settings.heading
+  assign text = section.settings.text
+  assign button_content = section.settings.button_content
+  assign button_url = section.settings.button_url
+
+-%}
+
+{{ 'dev-hero.css' | asset_url | stylesheet_tag }}
+
+<section class="dev-hero dev-hero--full-height" id="DevHero-{{ section.id }}" style="--hero-subtract: {{ section.settings.bar_height_to_subtract | default: 0 }}px;">
+  {%- comment -%} Desktop: background image layer (hidden on mobile) {%- endcomment -%}
+  {%- if desktop_image != blank or mobile_image != blank -%}
+    <div class="dev-hero__bg" aria-hidden="true">
+      <picture>
+        {%- if mobile_image != blank -%}
+          <source
+            media="(max-width: 767px)"
+            srcset="{{ mobile_image | image_url: width: 1200 }}"
+          >
+        {%- endif -%}
+        {%- if desktop_image != blank -%}
+          {{
+            desktop_image
+            | image_url: width: 3000
+            | image_tag:
+              widths: '1200, 1500, 2000, 2400, 3000',
+              sizes: '100vw',
+              alt: '',
+              class: 'dev-hero__bg-img'
+          }}
+        {%- elsif mobile_image != blank -%}
+          {{
+            mobile_image
+            | image_url: width: 3000
+            | image_tag:
+              widths: '600, 900, 1200, 1500, 2000',
+              sizes: '100vw',
+              alt: '',
+              class: 'dev-hero__bg-img'
+          }}
+        {%- endif -%}
+      </picture>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} Mobile only: top image (not bg), then content below {%- endcomment -%}
+  {%- if mobile_image != blank or desktop_image != blank -%}
+    {%- assign top_img = mobile_image | default: desktop_image -%}
+    {%- assign top_img_alt = heading | default: 'Hero' | escape -%}
+    {%- if top_img.alt != blank -%}
+      {%- assign top_img_alt = top_img.alt | escape -%}
+    {%- endif -%}
+    <div class="dev-hero__mobile-top">
+      {{ top_img | image_url: width: 1200 | image_tag: widths: '600, 900, 1200', sizes: '100vw', alt: top_img_alt, class: 'dev-hero__mobile-top-img' }}
+    </div>
+  {%- endif -%}
+
+  <div class="dev-hero__inner">
+    <div class="dev-hero__content">
+      {%- if heading != blank -%}
+        <h1 class="dev-hero__heading">{{ heading | escape }}</h1>
+      {%- endif -%}
+
+      {%- if text != blank -%}
+        <div class="dev-hero__text">
+          {{ text }}
+        </div>
+      {%- endif -%}
+
+      {%- if button_content != blank and button_url != blank -%}
+        <a href="{{ button_url }}" class="dev-hero__button">
+          {{ button_content | escape }}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Dev Hero",
+  "tag": "section",
+  "class": "dev-hero-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "desktop_image",
+      "label": "Desktop Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile Image",
+      "info": "Optional. Shown on viewports 749px and below when set."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "ONE PIECE. INFINITE ADVENTURE."
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>The merino wool jumpsuit built for <em>anything</em>.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_content",
+      "label": "Button content",
+      "default": "SHOP THE DROP"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "range",
+      "id": "bar_height_to_subtract",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "label": "Subtract height for bar below",
+      "info": "If Dev Feature Bar is directly below this hero, set this to the bar height (e.g. 80) so the hero height accounts for it.",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Dev Hero"
+    }
+  ]
+}
+{% endschema %}

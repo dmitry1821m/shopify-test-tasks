@@ -1,528 +1,2160 @@
-{{ 'component-card.css' | asset_url | stylesheet_tag }}
-{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  This is a required section for the Shopify Theme Store.
+  It is available in the "Featured Collection" section in the theme editor.
 
-{{ 'component-slider.css' | asset_url | stylesheet_tag }}
-{{ 'template-collection.css' | asset_url | stylesheet_tag }}
+  Theme Store required settings
+  - Collection
 
-{% if section.settings.image_shape == 'blob' %}
-  {{ 'mask-blobs.css' | asset_url | stylesheet_tag }}
-{%- endif -%}
-
-{%- unless section.settings.quick_add == 'none' -%}
-  {{ 'quick-add.css' | asset_url | stylesheet_tag }}
-  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
-{%- endunless -%}
-
-{%- if section.settings.quick_add == 'standard' -%}
-  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
-{%- endif -%}
-
-{%- if section.settings.quick_add == 'bulk' -%}
-  <script src="{{ 'quick-add-bulk.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'quantity-popover.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'price-per-item.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'quick-order-list.js' | asset_url }}" defer="defer"></script>
-{%- endif -%}
-
-{%- style -%}
-  .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
-  }
-
-  @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
-    }
-  }
-{%- endstyle -%}
-
+  Theme Store optional settings
+  - Heading: title of the featured collection section
+{%- endcomment -%}
 {%- liquid
-  assign products_to_display = section.settings.collection.all_products_count
-
-  if section.settings.collection.all_products_count > section.settings.products_to_show
-    assign products_to_display = section.settings.products_to_show
-    assign more_in_collection = true
-  endif
-
-  assign columns_mobile_int = section.settings.columns_mobile | plus: 0
-  assign columns_desktop_int = section.settings.columns_desktop | plus: 0
-  assign show_mobile_slider = false
-  if section.settings.swipe_on_mobile and products_to_display > columns_mobile_int
-    assign show_mobile_slider = true
-  endif
-
-  assign max_columns_to_show = columns_mobile_int
-  if columns_desktop_int > columns_mobile_int
-    assign max_columns_to_show = columns_desktop_int
-  endif
-
-  assign show_desktop_slider = false
-  if section.settings.enable_desktop_slider and products_to_display > section.settings.columns_desktop
-    assign show_desktop_slider = true
+  assign collection = section.settings.collection
+  if section.settings.image_shape != ''
+    assign image_shape = section.settings.image_shape
+  else
+    assign image_shape = settings.product_tile_media_shape
   endif
 -%}
-
-<div
-  class="color-{{ section.settings.color_scheme }} isolate gradient"
+<section
+  class="relative overflow-hidden bg-scheme-background  text-scheme-text {% if section.settings.use_gradient_background %}bg-scheme-gradient{% endif %} overflow-hidden"
+  data-color-scheme="{{ section.settings.color_scheme }}"
 >
-  <div
-    class="collection{% if section.settings.quick_add == 'bulk' %} collection-quick-add-bulk{% endif %} section-{{ section.id }}-padding{% if section.settings.full_width %} collection--full-width{% endif %}"
-    id="collection-{{ section.id }}"
-    data-id="{{ section.id }}"
-  >
-    <div class="collection__title title-wrapper title-wrapper--no-top-margin page-width{% if show_mobile_slider %} title-wrapper--self-padded-tablet-down{% endif %}{% if show_desktop_slider %} collection__title--desktop-slider{% endif %}">
-      {%- if section.settings.title != blank -%}
-        <h2 class="title inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-          {{ section.settings.title }}
-        </h2>
-      {%- endif -%}
-      {%- if section.settings.description != blank
-        or section.settings.show_description
-        and section.settings.collection.description != empty
-      -%}
-        <div class="collection__description {{ section.settings.description_style }} rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-          {%- if section.settings.show_description -%}
-            {{ section.settings.collection.description }}
-          {%- else -%}
-            {{ section.settings.description -}}
-          {%- endif %}
-        </div>
-      {%- endif -%}
-    </div>
+  <div class="section-content relative z-10 py-section-vertical-spacing {% unless section.settings.layout == 'carousel' %}px-section w-full max-w-site mx-auto{% endunless %}">
+    {% if section.settings.title != '' %}
+      <h2 class="inline-heading-rte font-heading heading-standard  heading-style break-words text-center {{ settings.heading_drop_shadow_style }}">
+        {{ section.settings.title }}
+      </h2>
+    {% endif %}
 
-    <slider-component class="slider-mobile-gutter{% if section.settings.full_width %} slider-component-full-width{% endif %}{% if show_mobile_slider == false %} page-width{% endif %}{% if show_desktop_slider == false and section.settings.full_width == false %} page-width-desktop{% endif %}{% if show_desktop_slider %} slider-component-desktop{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-      <ul
-        id="Slider-{{ section.id }}"
-        data-id="{{ section.id }}"
-        class="grid product-grid contains-card contains-card--product{% if settings.card_style == 'standard' %} contains-card--standard{% endif %} grid--{{ section.settings.columns_desktop }}-col-desktop{% if section.settings.collection == blank %} grid--2-col-tablet-down{% else %} grid--{{ section.settings.columns_mobile }}-col-tablet-down{% endif %}{% if show_mobile_slider or show_desktop_slider %} slider{% if show_desktop_slider %} slider--desktop{% endif %}{% if show_mobile_slider %} slider--tablet grid--peek{% endif %}{% endif %}"
-        role="list"
-        aria-label="{{ 'general.slider.name' | t }}"
-      >
-        {% assign skip_card_product_styles = false %}
-
-        {%- if section.settings.collection.products.size > 0 -%}
-          {% assign lazy_load = false %}
-          {% paginate section.settings.collection.products by section.settings.products_to_show %}
-            {%- for product in section.settings.collection.products limit: section.settings.products_to_show -%}
-              {% if lazy_load == false and forloop.index > max_columns_to_show %}
-                {% assign lazy_load = true %}
-              {% endif %}
-              <li
-                id="Slide-{{ section.id }}-{{ forloop.index }}"
-                class="grid__item{% if show_mobile_slider or show_desktop_slider %} slider__slide{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-                {% if settings.animations_reveal_on_scroll %}
-                  data-cascade
-                  style="--animation-order: {{ forloop.index }};"
-                {% endif %}
-              >
-                {% render 'card-product',
-                  card_product: product,
-                  media_aspect_ratio: section.settings.image_ratio,
-                  image_shape: section.settings.image_shape,
-                  lazy_load: lazy_load,
-                  show_secondary_image: section.settings.show_secondary_image,
-                  show_vendor: section.settings.show_vendor,
-                  show_rating: section.settings.show_rating,
-                  skip_styles: skip_card_product_styles,
-                  section_id: section.id,
-                  quick_add: section.settings.quick_add
-                %}
-              </li>
-              {%- assign skip_card_product_styles = true -%}
-            {%- endfor -%}
-          {% endpaginate %}
-        {%- else -%}
-          {%- for i in (1..section.settings.columns_desktop) -%}
-            <li
-              class="grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-              {% if settings.animations_reveal_on_scroll %}
-                data-cascade
-                style="--animation-order: {{ forloop.index }};"
-              {% endif %}
-            >
-              {% liquid
-                assign ridx = forloop.rindex
-                case ridx
-                  when 5
-                    assign ridx = 1
-                  when 6
-                    assign ridx = 2
-                endcase
-              %}
-              {%- assign placeholder_image = 'product-apparel-' | append: ridx -%}
-              {% render 'card-product',
-                show_vendor: section.settings.show_vendor,
-                media_aspect_ratio: section.settings.image_ratio,
-                image_shape: section.settings.image_shape,
-                lazy_load: false,
-                placeholder_image: placeholder_image
-              %}
-            </li>
-          {%- endfor -%}
-        {%- endif -%}
-      </ul>
-      {%- if show_mobile_slider or show_desktop_slider -%}
-        <div class="slider-buttons">
-          <button
-            type="button"
-            class="slider-button slider-button--prev"
-            name="previous"
-            aria-label="{{ 'general.slider.previous_slide' | t }}"
-            aria-controls="Slider-{{ section.id }}"
-          >
-            <span class="svg-wrapper">
-              {{- 'icon-caret.svg' | inline_asset_content -}}
-            </span>
-          </button>
-          <div class="slider-counter caption">
-            <span class="slider-counter--current">1</span>
-            <span aria-hidden="true"> / </span>
-            <span class="visually-hidden">{{ 'general.slider.of' | t }}</span>
-            <span class="slider-counter--total">{{ products_to_display }}</span>
-          </div>
-          <button
-            type="button"
-            class="slider-button slider-button--next"
-            name="next"
-            aria-label="{{ 'general.slider.next_slide' | t }}"
-            aria-controls="Slider-{{ section.id }}"
-          >
-            <span class="svg-wrapper">
-              {{- 'icon-caret.svg' | inline_asset_content -}}
-            </span>
-          </button>
-        </div>
-      {%- endif -%}
-    </slider-component>
-
-    {%- if section.settings.show_view_all and more_in_collection -%}
-      <div class="center collection__view-all{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-        <a
-          href="{{ section.settings.collection.url }}"
-          class="{% if section.settings.view_all_style == 'link' %}link underlined-link{% elsif section.settings.view_all_style == 'solid' %}button{% else %}button button--secondary{% endif %}"
-          aria-label="{{ 'sections.featured_collection.view_all_label' | t: collection_name: section.settings.collection.title | escape }}"
-        >
-          {{ 'sections.featured_collection.view_all' | t }}
-        </a>
+    {% if section.settings.subheading != '' %}
+      <div class="rte mx-auto mt-5 max-w-md text-center">
+        {{ section.settings.subheading }}
       </div>
     {%- endif -%}
-    {% if section.settings.image_shape == 'arch' %}
-      {{ 'mask-arch.svg' | inline_asset_content }}
-    {%- endif -%}
+
+    {%- render 'featured-collection',
+      item: section,
+      collection: collection,
+      image_shape: image_shape
+    -%}
   </div>
-</div>
+
+  {%- liquid
+    for block in section.blocks
+      case block.type
+        when 'background_shape'
+          render 'block-background-shape', block: block
+        when 'background_pattern'
+          render 'block-background-pattern', block: block, scheme: section.settings.color_scheme
+      endcase
+    endfor
+  -%}
+</section>
+
+{%- liquid
+  assign stickers = section.blocks | where: 'type', 'sticker'
+  assign shape_dividers = section.blocks | where: 'type', 'shape_divider'
+  for sticker in stickers
+    render 'block-sticker', block: sticker
+  endfor
+  for shape_divider in shape_dividers
+    render 'block-shape-divider', block: shape_divider
+  endfor
+-%}
 
 {% schema %}
 {
-  "name": "t:sections.featured-collection.name",
-  "tag": "section",
-  "class": "section",
-  "disabled_on": {
-    "groups": ["header", "footer"]
-  },
+  "name": "t:sections.featured_collection.name",
   "settings": [
-    {
-      "type": "collection",
-      "id": "collection",
-      "label": "t:sections.featured-collection.settings.collection.label"
-    },
-    {
-      "type": "range",
-      "id": "products_to_show",
-      "min": 2,
-      "max": 25,
-      "step": 1,
-      "default": 4,
-      "label": "t:sections.featured-collection.settings.products_to_show.label"
-    },     
-    {
-      "type": "header",
-      "content": "t:sections.featured-collection.settings.header_text.content"
-    },   
     {
       "type": "inline_richtext",
       "id": "title",
-      "default": "t:sections.featured-collection.settings.title.default",
-      "label": "t:sections.featured-collection.settings.title.label"
+      "label": "t:sections.featured_collection.settings.title.label",
+      "default": "Featured collection"
     },
     {
-      "type": "select",
-      "id": "heading_size",
-      "options": [
-        {
-          "value": "h2",
-          "label": "t:sections.all.heading_size.options__1.label"
-        },
-        {
-          "value": "h1",
-          "label": "t:sections.all.heading_size.options__2.label"
-        },
-        {
-          "value": "h0",
-          "label": "t:sections.all.heading_size.options__3.label"
-        },
-        {
-          "value": "hxl",
-          "label": "t:sections.all.heading_size.options__4.label"
-        },
-        {
-          "value": "hxxl",
-          "label": "t:sections.all.heading_size.options__5.label"
-        }
-      ],
-      "default": "h1",
-      "label": "t:sections.all.heading_size.label"
+      "id": "subheading",
+      "type": "text",
+      "label": "t:sections.featured_collection.settings.subheading.label",
+      "default": "Use this text to share information about your collection."
     },
     {
-      "type": "richtext",
-      "id": "description",
-      "label": "t:sections.featured-collection.settings.description.label"
+      "id": "collection",
+      "type": "collection",
+      "label": "t:common.settings.collection.label"
     },
-    {
-      "type": "checkbox",
-      "id": "show_description",
-      "label": "t:sections.featured-collection.settings.show_description.label",
-      "default": false   
-    },
-    {
-      "type": "select",
-      "id": "description_style",
-      "label": "t:sections.featured-collection.settings.description_style.label",
-      "options": [
-        {
-          "value": "body",
-          "label": "t:sections.featured-collection.settings.description_style.options__1.label"
-        },
-        {
-          "value": "subtitle",
-          "label": "t:sections.featured-collection.settings.description_style.options__2.label"
-        },
-        {
-          "value": "uppercase",
-          "label": "t:sections.featured-collection.settings.description_style.options__3.label"
-        }
-      ],
-      "default": "body"
-    },
-    {
-      "type": "header",
-      "content": "t:sections.featured-collection.settings.header_collection.content"
-    },    
     {
       "type": "range",
-      "id": "columns_desktop",
-      "min": 1,
-      "max": 6,
+      "id": "no_products",
+      "min": 2,
+      "max": 18,
       "step": 1,
-      "default": 4,
-      "label": "t:sections.featured-collection.settings.columns_desktop.label"
-    },
-        {
-      "type": "checkbox",
-      "id": "enable_desktop_slider",
-      "label": "t:sections.featured-collection.settings.enable_desktop_slider.label",
-      "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "full_width",
-      "label": "t:sections.featured-collection.settings.full_width.label",
-      "default": false
+      "label": "t:common.settings.no_products.label",
+      "default": 4
     },
     {
       "type": "checkbox",
       "id": "show_view_all",
-      "default": true,
-      "label": "t:sections.featured-collection.settings.show_view_all.label",
-      "info": "t:sections.featured-collection.settings.show_view_all.info"
+      "label": "t:sections.featured_collection.settings.show_view_all.label",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_quick_buy",
+      "label": "t:common.settings.enable_quick_buy.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "display_on_card",
+      "label": "t:common.settings.display_on_card.label"
     },
     {
       "type": "select",
-      "id": "view_all_style",
-      "label": "t:sections.featured-collection.settings.view_all_style.label",
+      "id": "layout",
+      "label": "t:common.settings.layout",
+      "default": "grid",
       "options": [
         {
-          "value": "link",
-          "label": "t:sections.featured-collection.settings.view_all_style.options__1.label"
+          "value": "grid",
+          "label": "t:common.options.grid.label"
         },
         {
-          "value": "outline",
-          "label": "t:sections.featured-collection.settings.view_all_style.options__2.label"
-        },
-        {
-          "value": "solid",
-          "label": "t:sections.featured-collection.settings.view_all_style.options__3.label"
+          "value": "carousel",
+          "label": "t:common.options.carousel.label"
         }
-      ],
-      "default": "solid"
-    }, 
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "t:sections.all.colors.label",
-      "info": "t:sections.all.colors.has_cards_info",
-      "default": "scheme-1"
+      ]
     },
     {
       "type": "header",
-      "content": "t:sections.featured-collection.settings.header.content"
+      "content": "t:common.settings.header_grid"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:common.settings.paragraph_these_settings_only"
     },
     {
       "type": "select",
-      "id": "image_ratio",
+      "id": "products_per_row_mobile",
+      "label": "t:common.settings.products_per_row_mobile.label",
+      "default": "1",
       "options": [
         {
-          "value": "adapt",
-          "label": "t:sections.featured-collection.settings.image_ratio.options__1.label"
+          "value": "1",
+          "label": "t:common.options.1.label"
         },
         {
-          "value": "portrait",
-          "label": "t:sections.featured-collection.settings.image_ratio.options__2.label"
+          "value": "2",
+          "label": "t:common.options.2.label"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "products_per_row_desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "label": "t:common.settings.products_per_row_desktop.label",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "t:common.settings.header_carousel"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:common.settings.these_settings_only_apply_when_layout_is_set_to_carousel"
+    },
+    {
+      "type": "select",
+      "id": "slideshow_focus",
+      "label": "t:common.settings.slideshow_focus.label",
+      "options": [
+        {
+          "value": "center",
+          "label": "t:common.options.center.label"
         },
         {
-          "value": "square",
-          "label": "t:sections.featured-collection.settings.image_ratio.options__3.label"
+          "value": "left",
+          "label": "t:common.options.left.label"
         }
       ],
-      "default": "adapt",
-      "label": "t:sections.featured-collection.settings.image_ratio.label"
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "mobile_slide_width",
+      "label": "t:common.settings.mobile_slide_width.label",
+      "options": [
+        {
+          "value": "three_fifths",
+          "label": "t:common.options.three_fifths.label"
+        },
+        {
+          "value": "full_width",
+          "label": "t:common.options.full_width.label"
+        }
+      ],
+      "default": "three_fifths"
+    },
+    {
+      "type": "range",
+      "id": "desktop_slide_width",
+      "min": 20,
+      "max": 60,
+      "step": 5,
+      "unit": "%",
+      "label": "t:common.settings.desktop_slide_width.label",
+      "default": 40
+    },
+    {
+      "type": "select",
+      "id": "autoscroll_mode",
+      "label": "t:common.settings.autoscroll_mode.label",
+      "options": [
+        {
+          "value": "1",
+          "label": "t:common.options.right_to_left.label"
+        },
+        {
+          "value": "-1",
+          "label": "t:common.options.left_to_right.label"
+        },
+        {
+          "value": "0",
+          "label": "t:common.options.disabled.label"
+        }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "header",
+      "content": "t:common.settings.header_product_grid"
+    },
+    {
+      "type": "select",
+      "id": "product_tiles_aspect_ratio",
+      "label": "t:common.settings.product_tiles_aspect_ratio.label",
+      "options": [
+        {
+          "value": "",
+          "label": "t:common.options.same_as_theme_settings.label"
+        },
+        {
+          "value": "natural",
+          "label": "t:common.options.natural.label"
+        },
+        {
+          "value": "aspect-w-4 aspect-h-3",
+          "label": "t:common.options.landscape.label"
+        },
+        {
+          "value": "aspect-w-1 aspect-h-1",
+          "label": "t:common.options.square.label"
+        },
+        {
+          "value": "aspect-w-3 aspect-h-4",
+          "label": "t:common.options.portrait.label"
+        }
+      ],
+      "default": ""
     },
     {
       "type": "select",
       "id": "image_shape",
+      "label": "t:common.settings.image_shape.label",
       "options": [
         {
+          "value": "",
+          "label": "t:common.options.same_as_theme_settings.label"
+        },
+        {
           "value": "default",
-          "label": "t:sections.all.image_shape.options__1.label"
+          "label": "t:common.options.default.label",
+          "group": "t:common.groups.fit_to_image"
         },
         {
-          "value": "arch",
-          "label": "t:sections.all.image_shape.options__2.label"
+          "value": "default_ellipse",
+          "label": "t:common.options.ellipse.label",
+          "group": "t:common.groups.fit_to_image"
         },
         {
-          "value": "blob",
-          "label": "t:sections.all.image_shape.options__3.label"
+          "value": "default_pill",
+          "label": "t:common.options.pill.label",
+          "group": "t:common.groups.fit_to_image"
         },
         {
-          "value": "chevronleft",
-          "label": "t:sections.all.image_shape.options__4.label"
-        },
-        {
-          "value": "chevronright",
-          "label": "t:sections.all.image_shape.options__5.label"
+          "value": "default_archway",
+          "label": "t:common.options.archway.label",
+          "group": "t:common.groups.fit_to_image"
         },
         {
           "value": "diamond",
-          "label": "t:sections.all.image_shape.options__6.label"
+          "label": "t:common.options.diamond.label",
+          "group": "t:common.groups.basic"
+        },
+        {
+          "value": "triangle_1",
+          "label": "t:common.options.triangle_1.label",
+          "group": "t:common.groups.basic"
+        },
+        {
+          "value": "triangle_2",
+          "label": "t:common.options.triangle_2.label",
+          "group": "t:common.groups.basic"
+        },
+        {
+          "value": "pentagon",
+          "label": "t:common.options.pentagon.label",
+          "group": "t:common.groups.polygons"
+        },
+        {
+          "value": "hexagon",
+          "label": "t:common.options.hexagon.label",
+          "group": "t:common.groups.polygons"
+        },
+        {
+          "value": "heptagon",
+          "label": "t:common.options.heptagon.label",
+          "group": "t:common.groups.polygons"
+        },
+        {
+          "value": "octagon",
+          "label": "t:common.options.octagon.label",
+          "group": "t:common.groups.polygons"
+        },
+        {
+          "value": "nonagon",
+          "label": "t:common.options.nonagon.label",
+          "group": "t:common.groups.polygons"
+        },
+        {
+          "value": "decagon",
+          "label": "t:common.options.decagon.label",
+          "group": "t:common.groups.polygons"
+        },
+        {
+          "value": "rounded_pentagon",
+          "label": "t:common.options.rounded_pentagon.label",
+          "group": "t:common.groups.polygons"
+        },
+        {
+          "value": "rounded_hexagon",
+          "label": "t:common.options.rounded_hexagon.label",
+          "group": "t:common.groups.polygons"
+        },
+        {
+          "value": "rounded_heptagon",
+          "label": "t:common.options.rounded_heptagon.label",
+          "group": "t:common.groups.polygons"
+        },
+        {
+          "value": "rounded_octagon",
+          "label": "t:common.options.rounded_octagon.label",
+          "group": "t:common.groups.polygons"
+        },
+        {
+          "value": "rounded_nonagon",
+          "label": "t:common.options.rounded_nonagon.label",
+          "group": "t:common.groups.polygons"
+        },
+        {
+          "value": "rounded_decagon",
+          "label": "t:common.options.rounded_decagon.label",
+          "group": "t:common.groups.polygons"
+        },
+        {
+          "value": "star_1",
+          "label": "t:common.options.star_1.label",
+          "group": "t:common.groups.stars"
+        },
+        {
+          "value": "star_2",
+          "label": "t:common.options.star_2.label",
+          "group": "t:common.groups.stars"
+        },
+        {
+          "value": "star_3",
+          "label": "t:common.options.star_3.label",
+          "group": "t:common.groups.stars"
+        },
+        {
+          "value": "star_4",
+          "label": "t:common.options.star_4.label",
+          "group": "t:common.groups.stars"
+        },
+        {
+          "value": "star_5",
+          "label": "t:common.options.star_5.label",
+          "group": "t:common.groups.stars"
+        },
+        {
+          "value": "star_6",
+          "label": "t:common.options.star_6.label",
+          "group": "t:common.groups.stars"
+        },
+        {
+          "value": "abstract_star_1",
+          "label": "t:common.options.abstract_star_1.label",
+          "group": "t:common.groups.stars"
+        },
+        {
+          "value": "abstract_star_2",
+          "label": "t:common.options.abstract_star_2.label",
+          "group": "t:common.groups.stars"
+        },
+        {
+          "value": "abstract_star_3",
+          "label": "t:common.options.abstract_star_3.label",
+          "group": "t:common.groups.stars"
+        },
+        {
+          "value": "scalloped_circle_1",
+          "label": "t:common.options.scalloped_circle_1.label",
+          "group": "t:common.groups.scalloped_circles"
+        },
+        {
+          "value": "scalloped_circle_2",
+          "label": "t:common.options.scalloped_circle_2.label",
+          "group": "t:common.groups.scalloped_circles"
+        },
+        {
+          "value": "scalloped_circle_3",
+          "label": "t:common.options.scalloped_circle_3.label",
+          "group": "t:common.groups.scalloped_circles"
+        },
+        {
+          "value": "scalloped_circle_4",
+          "label": "t:common.options.scalloped_circle_4.label",
+          "group": "t:common.groups.scalloped_circles"
+        },
+        {
+          "value": "scalloped_circle_5",
+          "label": "t:common.options.scalloped_circle_5.label",
+          "group": "t:common.groups.scalloped_circles"
+        },
+        {
+          "value": "scalloped_circle_6",
+          "label": "t:common.options.scalloped_circle_6.label",
+          "group": "t:common.groups.scalloped_circles"
         },
         {
           "value": "parallelogram",
-          "label": "t:sections.all.image_shape.options__7.label"
+          "label": "t:common.options.parallelogram.label",
+          "group": "t:common.groups.square"
         },
         {
-          "value": "round",
-          "label": "t:sections.all.image_shape.options__8.label"
+          "value": "squircle",
+          "label": "t:common.options.squircle.label",
+          "group": "t:common.groups.square"
+        },
+        {
+          "value": "scalloped_square_1",
+          "label": "t:common.options.scalloped_square_1.label",
+          "group": "t:common.groups.square"
+        },
+        {
+          "value": "scalloped_square_2",
+          "label": "t:common.options.scalloped_square_2.label",
+          "group": "t:common.groups.square"
+        },
+        {
+          "value": "leaf",
+          "label": "t:common.options.leaf.label",
+          "group": "t:common.groups.square"
+        },
+        {
+          "value": "clipped_square",
+          "label": "t:common.options.clipped.label",
+          "group": "t:common.groups.square"
+        },
+        {
+          "value": "convex_square",
+          "label": "t:common.options.convex.label",
+          "group": "t:common.groups.square"
+        },
+        {
+          "value": "twisted_square",
+          "label": "t:common.options.twisted.label",
+          "group": "t:common.groups.square"
+        },
+        {
+          "value": "trapeze",
+          "label": "t:common.options.trapeze.label",
+          "group": "t:common.groups.square"
+        },
+        {
+          "value": "pinched",
+          "label": "t:common.options.pinched.label",
+          "group": "t:common.groups.square"
+        },
+        {
+          "value": "pixelated",
+          "label": "t:common.options.pixelated.label",
+          "group": "t:common.groups.square"
+        },
+        {
+          "value": "overlapped",
+          "label": "t:common.options.overlapped.label",
+          "group": "t:common.groups.square"
+        },
+        {
+          "value": "zig_zag",
+          "label": "t:common.options.zig_zag.label",
+          "group": "t:common.groups.miscellaneous"
+        },
+        {
+          "value": "zig_zag_tear",
+          "label": "t:common.options.zig_zag_tear.label",
+          "group": "t:common.groups.miscellaneous"
+        },
+        {
+          "value": "wave_tear",
+          "label": "t:common.options.wave_tear.label",
+          "group": "t:common.groups.miscellaneous"
+        },
+        {
+          "value": "flower",
+          "label": "t:common.options.flower.label",
+          "group": "t:common.groups.miscellaneous"
+        },
+        {
+          "value": "flower_bloom",
+          "label": "t:common.options.flower_bloom.label",
+          "group": "t:common.groups.miscellaneous"
+        },
+        {
+          "value": "concave",
+          "label": "t:common.options.concave.label",
+          "group": "t:common.groups.miscellaneous"
+        },
+        {
+          "value": "flag",
+          "label": "t:common.options.flag.label",
+          "group": "t:common.groups.miscellaneous"
+        },
+        {
+          "value": "abstract_oval",
+          "label": "t:common.options.abstract_oval.label",
+          "group": "t:common.groups.miscellaneous"
+        },
+        {
+          "value": "cross",
+          "label": "t:common.options.cross.label",
+          "group": "t:common.groups.miscellaneous"
+        },
+        {
+          "value": "quatrefoil",
+          "label": "t:common.options.quatrefoil.label",
+          "group": "t:common.groups.miscellaneous"
+        },
+        {
+          "value": "quadrant",
+          "label": "t:common.options.quadrant.label",
+          "group": "t:common.groups.miscellaneous"
+        },
+        {
+          "value": "wind",
+          "label": "t:common.options.wind.label",
+          "group": "t:common.groups.miscellaneous"
+        },
+        {
+          "value": "windmill",
+          "label": "t:common.options.windmill.label",
+          "group": "t:common.groups.miscellaneous"
+        },
+        {
+          "value": "heart",
+          "label": "t:common.options.heart.label",
+          "group": "t:common.groups.miscellaneous"
+        },
+        {
+          "value": "mirrored_pyramids",
+          "label": "t:common.options.mirrored_pyramids.label",
+          "group": "t:common.groups.miscellaneous"
+        },
+        {
+          "value": "plus",
+          "label": "t:common.options.plus.label",
+          "group": "t:common.groups.miscellaneous"
+        },
+        {
+          "value": "double_pill_1",
+          "label": "t:common.options.double_pill_1.label",
+          "group": "t:common.groups.miscellaneous"
+        },
+        {
+          "value": "double_pill_2",
+          "label": "t:common.options.double_pill_2.label",
+          "group": "t:common.groups.miscellaneous"
+        },
+        {
+          "value": "triple_pill_1",
+          "label": "t:common.options.triple_pill_1.label",
+          "group": "t:common.groups.miscellaneous"
+        },
+        {
+          "value": "triple_pill_2",
+          "label": "t:common.options.triple_pill_2.label",
+          "group": "t:common.groups.miscellaneous"
+        },
+        {
+          "value": "crown",
+          "label": "t:common.options.crown.label",
+          "group": "t:common.groups.miscellaneous"
+        },
+        {
+          "value": "stair",
+          "label": "t:common.options.stair.label",
+          "group": "t:common.groups.miscellaneous"
+        },
+        {
+          "value": "pancake_stack",
+          "label": "t:common.options.pancake_stack.label",
+          "group": "t:common.groups.miscellaneous"
+        },
+        {
+          "value": "asterisk",
+          "label": "t:common.options.asterisk.label",
+          "group": "t:common.groups.miscellaneous"
+        },
+        {
+          "value": "overlapping_squares",
+          "label": "t:common.options.overlapping_squares.label",
+          "group": "t:common.groups.miscellaneous"
+        },
+        {
+          "value": "brush_stroke",
+          "label": "t:common.options.brush_stroke.label",
+          "group": "t:common.groups.miscellaneous"
+        },
+        {
+          "value": "blob",
+          "label": "t:common.options.blob.label",
+          "group": "t:common.groups.variable"
         }
       ],
-      "default": "default",
-      "label": "t:sections.all.image_shape.label"
+      "info": "t:common.settings.image_shape.info"
+    },
+    {
+      "type": "header",
+      "content": "t:common.settings.header_color"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "default": "scheme1",
+      "label": "t:common.settings.color_scheme.label"
     },
     {
       "type": "checkbox",
-      "id": "show_secondary_image",
-      "default": false,
-      "label": "t:sections.featured-collection.settings.show_secondary_image.label"
-    },
+      "id": "use_gradient_background",
+      "label": "t:common.settings.use_gradient_background.label"
+    }
+  ],
+  "blocks": [
     {
-      "type": "checkbox",
-      "id": "show_vendor",
-      "default": false,
-      "label": "t:sections.featured-collection.settings.show_vendor.label"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_rating",
-      "default": false,
-      "label": "t:sections.featured-collection.settings.show_rating.label",
-      "info": "t:sections.featured-collection.settings.show_rating.info"
-    },
-    {
-      "type": "select",
-      "id": "quick_add",
-      "default": "none",
-      "label": "t:sections.main-collection-product-grid.settings.quick_add.label",
-      "options": [
+      "type": "background_pattern",
+      "name": "t:common.blocks.background_pattern.name",
+      "settings": [
         {
-          "value": "none",
-          "label": "t:sections.main-collection-product-grid.settings.quick_add.options.option_1"
+          "type": "select",
+          "id": "type",
+          "label": "t:common.blocks.background_pattern.settings.type.label",
+          "options": [
+            {
+              "value": "diagonal_lines",
+              "label": "t:common.options.diagonal_lines.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_lines"
+            },
+            {
+              "value": "grid",
+              "label": "t:common.options.grid_lines.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_lines"
+            },
+            {
+              "value": "grid_with_diagonal_lines",
+              "label": "t:common.options.grid_with_diagonal_lines.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_lines"
+            },
+            {
+              "value": "crosshatch",
+              "label": "t:common.options.crosshatch.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_lines"
+            },
+            {
+              "value": "zig_zag_lines",
+              "label": "t:common.options.zig_zag.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_lines"
+            },
+            {
+              "value": "waves_lines",
+              "label": "t:common.options.waves.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_lines"
+            },
+            {
+              "value": "dots",
+              "label": "t:common.options.dots.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_shapes"
+            },
+            {
+              "value": "triangle",
+              "label": "t:common.options.triangles.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_shapes"
+            },
+            {
+              "value": "polka_dot",
+              "label": "t:common.options.polka_dot.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_shapes"
+            },
+            {
+              "value": "polka_dot_triangles",
+              "label": "t:common.options.polka_dot_triangles.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_shapes"
+            },
+            {
+              "value": "plus",
+              "label": "t:common.options.plus.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_shapes"
+            },
+            {
+              "value": "cross",
+              "label": "t:common.options.cross.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_shapes"
+            },
+            {
+              "value": "squares",
+              "label": "t:common.options.squares.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_shapes"
+            },
+            {
+              "value": "vertical_stripes",
+              "label": "t:common.options.vertical_stripes.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_stripes"
+            },
+            {
+              "value": "horizontal_stripes",
+              "label": "t:common.blocks.background_pattern.settings.type.options.horizontal_stripes.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_stripes"
+            },
+            {
+              "value": "diagonal_stripes",
+              "label": "t:common.options.diagonal_stripes.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_stripes"
+            },
+            {
+              "value": "checkerboard",
+              "label": "t:common.options.checkerboard.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_geometric"
+            },
+            {
+              "value": "corner_triangle",
+              "label": "t:common.options.corner_triangle.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_geometric"
+            },
+            {
+              "value": "diamonds",
+              "label": "t:common.options.diamonds.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_geometric"
+            },
+            {
+              "value": "scales",
+              "label": "t:common.options.scales.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_geometric"
+            },
+            {
+              "value": "alternating_pinwheel",
+              "label": "t:common.options.alternating_pinwheel.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_geometric"
+            },
+            {
+              "value": "windmill",
+              "label": "t:common.options.windmill.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_geometric"
+            },
+            {
+              "value": "origami",
+              "label": "t:common.options.origami.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_geometric"
+            },
+            {
+              "value": "argyle",
+              "label": "t:common.options.argyle.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_geometric"
+            },
+            {
+              "value": "chevrons_1",
+              "label": "t:common.options.chevrons_1.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_geometric"
+            },
+            {
+              "value": "chevrons_2",
+              "label": "t:common.options.chevrons_2.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_geometric"
+            },
+            {
+              "value": "connected_circles",
+              "label": "t:common.options.connected_circles.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_geometric"
+            },
+            {
+              "value": "alternating_triangles",
+              "label": "t:common.options.alternating_triangles.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_geometric"
+            },
+            {
+              "value": "waves_geometric",
+              "label": "t:common.options.waves.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_geometric"
+            },
+            {
+              "value": "hexagons_geometric",
+              "label": "t:common.options.hexagons.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_geometric"
+            },
+            {
+              "value": "squiggle",
+              "label": "t:common.options.squiggle.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_geometric"
+            },
+            {
+              "value": "zig_zag_geometric",
+              "label": "t:common.options.zig_zag.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_geometric"
+            },
+            {
+              "value": "squiggles",
+              "label": "t:common.options.squiggles.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_miscellaneous"
+            },
+            {
+              "value": "sprinkles",
+              "label": "t:common.blocks.background_pattern.settings.type.options.sprinkles.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_miscellaneous"
+            },
+            {
+              "value": "8bit",
+              "label": "t:common.options.8bit.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_miscellaneous"
+            },
+            {
+              "value": "3d_cube",
+              "label": "t:common.blocks.background_pattern.settings.type.options.3d_cube.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_miscellaneous"
+            },
+            {
+              "value": "bubbles",
+              "label": "t:common.blocks.background_pattern.settings.type.options.bubbles.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_miscellaneous"
+            },
+            {
+              "value": "macaroni",
+              "label": "t:common.options.macaroni.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_miscellaneous"
+            },
+            {
+              "value": "leaves",
+              "label": "t:common.options.leaves.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_miscellaneous"
+            },
+            {
+              "value": "bricks",
+              "label": "t:common.options.bricks.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_miscellaneous"
+            },
+            {
+              "value": "herringbone_1",
+              "label": "t:common.options.herringbone_1.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_miscellaneous"
+            },
+            {
+              "value": "herringbone_2",
+              "label": "t:common.options.herringbone_2.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_miscellaneous"
+            },
+            {
+              "value": "interlocking_hexagons",
+              "label": "t:common.options.interlocking_hexagons.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_miscellaneous"
+            },
+            {
+              "value": "blobs",
+              "label": "t:common.options.blobs.label",
+              "group": "t:common.blocks.background_pattern.settings.type.options.group_miscellaneous"
+            }
+          ]
         },
         {
-          "value": "standard",
-          "label": "t:sections.main-collection-product-grid.settings.quick_add.options.option_2"
+          "type": "select",
+          "id": "color",
+          "label": "t:common.blocks.background_pattern.settings.color.label",
+          "default": "text",
+          "options": [
+            {
+              "value": "text",
+              "label": "t:common.options.text.label"
+            },
+            {
+              "value": "accent-1",
+              "label": "t:common.options.accent_1.label"
+            },
+            {
+              "value": "accent-2",
+              "label": "t:common.options.accent_2.label"
+            },
+            {
+              "value": "card",
+              "label": "t:common.options.card.label"
+            },
+            {
+              "value": "background",
+              "label": "t:common.options.background.label"
+            },
+            {
+              "value": "gradient",
+              "label": "t:common.options.gradient.label"
+            }
+          ]
         },
         {
-          "value": "bulk",
-          "label": "t:sections.main-collection-product-grid.settings.quick_add.options.option_3"
+          "type": "range",
+          "id": "size",
+          "min": 8,
+          "max": 600,
+          "unit": "px",
+          "label": "t:common.blocks.background_pattern.settings.size.label",
+          "step": 8,
+          "default": 24
+        },
+        {
+          "type": "range",
+          "id": "opacity",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "t:common.settings.opacity.label",
+          "default": 100
+        },
+        {
+          "type": "header",
+          "content": "t:common.settings.header_animation"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_parallax",
+          "label": "t:common.blocks.background_pattern.settings.enable_parallax.label",
+          "default": false,
+          "info": "t:common.blocks.background_pattern.settings.enable_parallax.info"
+        },
+        {
+          "type": "range",
+          "id": "parallax_speed",
+          "min": 1,
+          "max": 10,
+          "step": 1,
+          "label": "t:common.settings.parallax_speed.label",
+          "default": 3
         }
       ]
     },
     {
-      "type": "header",
-      "content": "t:sections.featured-collection.settings.header_mobile.content"
-    },
-    {
-      "type": "select",
-      "id": "columns_mobile",
-      "default": "2",
-      "label": "t:sections.featured-collection.settings.columns_mobile.label",
-      "options": [
+      "type": "background_shape",
+      "name": "t:common.blocks.background_shape.name",
+      "settings": [
         {
-          "value": "1",
-          "label": "t:sections.featured-collection.settings.columns_mobile.options__1.label"
+          "type": "select",
+          "id": "shape",
+          "label": "t:common.blocks.background_shape.settings.shape.label",
+          "default": "square",
+          "options": [
+            {
+              "value": "square",
+              "label": "t:common.blocks.background_shape.settings.shape.options.square.label",
+              "group": "t:common.groups.basic"
+            },
+            {
+              "value": "circle",
+              "label": "t:common.blocks.background_shape.settings.shape.options.circle.label",
+              "group": "t:common.groups.basic"
+            },
+            {
+              "value": "oval",
+              "label": "t:common.blocks.background_shape.settings.shape.options.oval.label",
+              "group": "t:common.groups.basic"
+            },
+            {
+              "value": "triangle",
+              "label": "t:common.blocks.background_shape.settings.shape.options.triangle.label",
+              "group": "t:common.groups.basic"
+            },
+            {
+              "value": "pentagon",
+              "label": "t:common.options.pentagon.label",
+              "group": "t:common.groups.polygons"
+            },
+            {
+              "value": "hexagon",
+              "label": "t:common.options.hexagon.label",
+              "group": "t:common.groups.polygons"
+            },
+            {
+              "value": "heptagon",
+              "label": "t:common.options.heptagon.label",
+              "group": "t:common.groups.polygons"
+            },
+            {
+              "value": "octagon",
+              "label": "t:common.options.octagon.label",
+              "group": "t:common.groups.polygons"
+            },
+            {
+              "value": "nonagon",
+              "label": "t:common.options.nonagon.label",
+              "group": "t:common.groups.polygons"
+            },
+            {
+              "value": "decagon",
+              "label": "t:common.options.decagon.label",
+              "group": "t:common.groups.polygons"
+            },
+            {
+              "value": "rounded_pentagon",
+              "label": "t:common.options.rounded_pentagon.label",
+              "group": "t:common.groups.polygons"
+            },
+            {
+              "value": "rounded_hexagon",
+              "label": "t:common.options.rounded_hexagon.label",
+              "group": "t:common.groups.polygons"
+            },
+            {
+              "value": "rounded_heptagon",
+              "label": "t:common.options.rounded_heptagon.label",
+              "group": "t:common.groups.polygons"
+            },
+            {
+              "value": "rounded_octagon",
+              "label": "t:common.options.rounded_octagon.label",
+              "group": "t:common.groups.polygons"
+            },
+            {
+              "value": "rounded_nonagon",
+              "label": "t:common.options.rounded_nonagon.label",
+              "group": "t:common.groups.polygons"
+            },
+            {
+              "value": "rounded_decagon",
+              "label": "t:common.options.rounded_decagon.label",
+              "group": "t:common.groups.polygons"
+            },
+            {
+              "value": "star_1",
+              "label": "t:common.options.star_1.label",
+              "group": "t:common.groups.stars"
+            },
+            {
+              "value": "star_2",
+              "label": "t:common.options.star_2.label",
+              "group": "t:common.groups.stars"
+            },
+            {
+              "value": "star_3",
+              "label": "t:common.options.star_3.label",
+              "group": "t:common.groups.stars"
+            },
+            {
+              "value": "star_4",
+              "label": "t:common.options.star_4.label",
+              "group": "t:common.groups.stars"
+            },
+            {
+              "value": "star_5",
+              "label": "t:common.options.star_5.label",
+              "group": "t:common.groups.stars"
+            },
+            {
+              "value": "star_6",
+              "label": "t:common.options.star_6.label",
+              "group": "t:common.groups.stars"
+            },
+            {
+              "value": "abstract_star_1",
+              "label": "t:common.options.abstract_star_1.label",
+              "group": "t:common.groups.stars"
+            },
+            {
+              "value": "abstract_star_2",
+              "label": "t:common.options.abstract_star_2.label",
+              "group": "t:common.groups.stars"
+            },
+            {
+              "value": "abstract_star_3",
+              "label": "t:common.options.abstract_star_3.label",
+              "group": "t:common.groups.stars"
+            },
+            {
+              "value": "scalloped_circle_1",
+              "label": "t:common.options.scalloped_circle_1.label",
+              "group": "t:common.groups.scalloped_circles"
+            },
+            {
+              "value": "scalloped_circle_2",
+              "label": "t:common.options.scalloped_circle_2.label",
+              "group": "t:common.groups.scalloped_circles"
+            },
+            {
+              "value": "scalloped_circle_3",
+              "label": "t:common.options.scalloped_circle_3.label",
+              "group": "t:common.groups.scalloped_circles"
+            },
+            {
+              "value": "scalloped_circle_4",
+              "label": "t:common.options.scalloped_circle_4.label",
+              "group": "t:common.groups.scalloped_circles"
+            },
+            {
+              "value": "scalloped_circle_5",
+              "label": "t:common.options.scalloped_circle_5.label",
+              "group": "t:common.groups.scalloped_circles"
+            },
+            {
+              "value": "scalloped_circle_6",
+              "label": "t:common.options.scalloped_circle_6.label",
+              "group": "t:common.groups.scalloped_circles"
+            },
+            {
+              "value": "parallelogram",
+              "label": "t:common.options.parallelogram.label",
+              "group": "t:common.groups.square"
+            },
+            {
+              "value": "squircle",
+              "label": "t:common.options.squircle.label",
+              "group": "t:common.groups.square"
+            },
+            {
+              "value": "scalloped_square_1",
+              "label": "t:common.options.scalloped_square_1.label",
+              "group": "t:common.groups.square"
+            },
+            {
+              "value": "scalloped_square_2",
+              "label": "t:common.options.scalloped_square_2.label",
+              "group": "t:common.groups.square"
+            },
+            {
+              "value": "leaf",
+              "label": "t:common.options.leaf.label",
+              "group": "t:common.groups.square"
+            },
+            {
+              "value": "clipped_square",
+              "label": "t:common.options.clipped.label",
+              "group": "t:common.groups.square"
+            },
+            {
+              "value": "convex_square",
+              "label": "t:common.options.convex.label",
+              "group": "t:common.groups.square"
+            },
+            {
+              "value": "twisted_square",
+              "label": "t:common.options.twisted.label",
+              "group": "t:common.groups.square"
+            },
+            {
+              "value": "trapeze",
+              "label": "t:common.options.trapeze.label",
+              "group": "t:common.groups.square"
+            },
+            {
+              "value": "pinched",
+              "label": "t:common.options.pinched.label",
+              "group": "t:common.groups.square"
+            },
+            {
+              "value": "pixelated",
+              "label": "t:common.options.pixelated.label",
+              "group": "t:common.groups.square"
+            },
+            {
+              "value": "overlapped",
+              "label": "t:common.options.overlapped.label",
+              "group": "t:common.groups.square"
+            },
+            {
+              "value": "zig_zag",
+              "label": "t:common.options.zig_zag.label",
+              "group": "t:common.groups.miscellaneous"
+            },
+            {
+              "value": "zig_zag_tear",
+              "label": "t:common.options.zig_zag_tear.label",
+              "group": "t:common.groups.miscellaneous"
+            },
+            {
+              "value": "wave_tear",
+              "label": "t:common.options.wave_tear.label",
+              "group": "t:common.groups.miscellaneous"
+            },
+            {
+              "value": "flower",
+              "label": "t:common.options.flower.label",
+              "group": "t:common.groups.miscellaneous"
+            },
+            {
+              "value": "flower_bloom",
+              "label": "t:common.options.flower_bloom.label",
+              "group": "t:common.groups.miscellaneous"
+            },
+            {
+              "value": "concave",
+              "label": "t:common.options.concave.label",
+              "group": "t:common.groups.miscellaneous"
+            },
+            {
+              "value": "flag",
+              "label": "t:common.options.flag.label",
+              "group": "t:common.groups.miscellaneous"
+            },
+            {
+              "value": "abstract_oval",
+              "label": "t:common.options.abstract_oval.label",
+              "group": "t:common.groups.miscellaneous"
+            },
+            {
+              "value": "cross",
+              "label": "t:common.options.cross.label",
+              "group": "t:common.groups.miscellaneous"
+            },
+            {
+              "value": "quatrefoil",
+              "label": "t:common.options.quatrefoil.label",
+              "group": "t:common.groups.miscellaneous"
+            },
+            {
+              "value": "quadrant",
+              "label": "t:common.options.quadrant.label",
+              "group": "t:common.groups.miscellaneous"
+            },
+            {
+              "value": "wind",
+              "label": "t:common.options.wind.label",
+              "group": "t:common.groups.miscellaneous"
+            },
+            {
+              "value": "windmill",
+              "label": "t:common.options.windmill.label",
+              "group": "t:common.groups.miscellaneous"
+            },
+            {
+              "value": "heart",
+              "label": "t:common.options.heart.label",
+              "group": "t:common.groups.miscellaneous"
+            },
+            {
+              "value": "mirrored_pyramids",
+              "label": "t:common.options.mirrored_pyramids.label",
+              "group": "t:common.groups.miscellaneous"
+            },
+            {
+              "value": "plus",
+              "label": "t:common.options.plus.label",
+              "group": "t:common.groups.miscellaneous"
+            },
+            {
+              "value": "double_pill_1",
+              "label": "t:common.options.double_pill_1.label",
+              "group": "t:common.groups.miscellaneous"
+            },
+            {
+              "value": "double_pill_2",
+              "label": "t:common.options.double_pill_2.label",
+              "group": "t:common.groups.miscellaneous"
+            },
+            {
+              "value": "triple_pill_1",
+              "label": "t:common.options.triple_pill_1.label",
+              "group": "t:common.groups.miscellaneous"
+            },
+            {
+              "value": "triple_pill_2",
+              "label": "t:common.options.triple_pill_2.label",
+              "group": "t:common.groups.miscellaneous"
+            },
+            {
+              "value": "crown",
+              "label": "t:common.options.crown.label",
+              "group": "t:common.groups.miscellaneous"
+            },
+            {
+              "value": "stair",
+              "label": "t:common.options.stair.label",
+              "group": "t:common.groups.miscellaneous"
+            },
+            {
+              "value": "pancake_stack",
+              "label": "t:common.options.pancake_stack.label",
+              "group": "t:common.groups.miscellaneous"
+            },
+            {
+              "value": "asterisk",
+              "label": "t:common.options.asterisk.label",
+              "group": "t:common.groups.miscellaneous"
+            },
+            {
+              "value": "overlapping_squares",
+              "label": "t:common.options.overlapping_squares.label",
+              "group": "t:common.groups.miscellaneous"
+            },
+            {
+              "value": "brush_stroke",
+              "label": "t:common.options.brush_stroke.label",
+              "group": "t:common.groups.miscellaneous"
+            },
+            {
+              "value": "blob",
+              "label": "t:common.options.blob.label",
+              "group": "t:common.groups.variable"
+            }
+          ]
         },
         {
-          "value": "2",
-          "label": "t:sections.featured-collection.settings.columns_mobile.options__2.label"
+          "type": "range",
+          "id": "blob_type",
+          "min": 1,
+          "max": 10,
+          "step": 1,
+          "label": "t:common.blocks.background_shape.settings.blob_type.label",
+          "default": 1,
+          "info": "t:common.blocks.background_shape.settings.blob_type.info"
+        },
+        {
+          "type": "range",
+          "id": "size",
+          "min": 25,
+          "max": 300,
+          "step": 5,
+          "label": "t:common.blocks.background_shape.settings.size.label",
+          "default": 100
+        },
+        {
+          "type": "range",
+          "id": "opacity",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "t:common.settings.opacity.label",
+          "default": 100
+        },
+        {
+          "type": "range",
+          "id": "blur",
+          "min": 0,
+          "max": 500,
+          "step": 5,
+          "unit": "px",
+          "label": "t:common.blocks.background_shape.settings.blur.label",
+          "default": 0
+        },
+        {
+          "type": "header",
+          "content": "t:common.settings.header_position"
+        },
+        {
+          "type": "range",
+          "id": "horizontal_position",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "t:common.blocks.background_shape.settings.horizontal_position.label",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "vertical_position",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "t:common.blocks.background_shape.settings.vertical_position.label",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "rotate",
+          "min": -90,
+          "max": 90,
+          "step": 2,
+          "unit": "deg",
+          "label": "t:common.settings.rotate.label",
+          "default": 0
+        },
+        {
+          "type": "header",
+          "content": "t:common.settings.header_animation"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_parallax",
+          "label": "t:common.blocks.background_shape.settings.enable_parallax.label",
+          "default": false,
+          "info": "t:common.blocks.background_shape.settings.enable_parallax.info"
+        },
+        {
+          "type": "range",
+          "id": "parallax_speed",
+          "min": 1,
+          "max": 10,
+          "step": 1,
+          "label": "t:common.settings.parallax_speed.label",
+          "default": 3
+        },
+        {
+          "type": "header",
+          "content": "t:common.settings.header_color"
+        },
+        {
+          "type": "color_scheme",
+          "id": "color_scheme",
+          "default": "scheme1",
+          "label": "t:common.settings.color_scheme.label"
+        },
+        {
+          "type": "select",
+          "id": "color",
+          "label": "t:common.settings.background_color.label",
+          "default": "accent-1",
+          "options": [
+            {
+              "value": "text",
+              "label": "t:common.options.text.label"
+            },
+            {
+              "value": "accent-1",
+              "label": "t:common.options.accent_1.label"
+            },
+            {
+              "value": "accent-2",
+              "label": "t:common.options.accent_2.label"
+            },
+            {
+              "value": "card",
+              "label": "t:common.options.card.label"
+            },
+            {
+              "value": "background",
+              "label": "t:common.options.background.label"
+            },
+            {
+              "value": "gradient",
+              "label": "t:common.options.gradient.label"
+            }
+          ]
         }
       ]
-    },    
-    {
-      "type": "checkbox",
-      "id": "swipe_on_mobile",
-      "default": false,
-      "label": "t:sections.featured-collection.settings.swipe_on_mobile.label"
-    },          
-    {
-      "type": "header",
-      "content": "t:sections.all.padding.section_padding_heading"
     },
     {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "t:sections.all.padding.padding_top",
-      "default": 36
+      "name": "t:common.blocks.sticker.name",
+      "type": "sticker",
+      "settings": [
+        {
+          "type": "range",
+          "id": "width",
+          "min": 100,
+          "max": 300,
+          "step": 10,
+          "unit": "px",
+          "label": "t:common.blocks.sticker.settings.width.label",
+          "default": 150
+        },
+        {
+          "type": "checkbox",
+          "id": "half_width_on_mobile",
+          "label": "t:common.blocks.sticker.settings.half_width_on_mobile.label",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "t:common.blocks.sticker.settings.text.label",
+          "info": "t:common.blocks.sticker.settings.text.info",
+          "default": "Sticker"
+        },
+        {
+          "type": "select",
+          "id": "shape",
+          "label": "t:common.blocks.sticker.settings.shape.label",
+          "options": [
+            {
+              "value": "fit_to_text",
+              "label": "t:common.blocks.sticker.settings.shape.options.fit_to_text.label"
+            },
+            {
+              "value": "circle",
+              "label": "t:common.options.circle.label",
+              "group": "t:common.groups.basic"
+            },
+            {
+              "value": "pentagon",
+              "label": "t:common.options.pentagon.label",
+              "group": "t:common.groups.polygons"
+            },
+            {
+              "value": "hexagon",
+              "label": "t:common.options.hexagon.label",
+              "group": "t:common.groups.polygons"
+            },
+            {
+              "value": "heptagon",
+              "label": "t:common.options.heptagon.label",
+              "group": "t:common.groups.polygons"
+            },
+            {
+              "value": "octagon",
+              "label": "t:common.options.octagon.label",
+              "group": "t:common.groups.polygons"
+            },
+            {
+              "value": "nonagon",
+              "label": "t:common.options.nonagon.label",
+              "group": "t:common.groups.polygons"
+            },
+            {
+              "value": "decagon",
+              "label": "t:common.options.decagon.label",
+              "group": "t:common.groups.polygons"
+            },
+            {
+              "value": "rounded_pentagon",
+              "label": "t:common.options.rounded_pentagon.label",
+              "group": "t:common.groups.polygons"
+            },
+            {
+              "value": "rounded_hexagon",
+              "label": "t:common.options.rounded_hexagon.label",
+              "group": "t:common.groups.polygons"
+            },
+            {
+              "value": "rounded_heptagon",
+              "label": "t:common.options.rounded_heptagon.label",
+              "group": "t:common.groups.polygons"
+            },
+            {
+              "value": "rounded_octagon",
+              "label": "t:common.options.rounded_octagon.label",
+              "group": "t:common.groups.polygons"
+            },
+            {
+              "value": "rounded_nonagon",
+              "label": "t:common.options.rounded_nonagon.label",
+              "group": "t:common.groups.polygons"
+            },
+            {
+              "value": "rounded_decagon",
+              "label": "t:common.options.rounded_decagon.label",
+              "group": "t:common.groups.polygons"
+            },
+            {
+              "value": "star_1",
+              "label": "t:common.options.star_1.label",
+              "group": "t:common.groups.stars"
+            },
+            {
+              "value": "star_2",
+              "label": "t:common.options.star_2.label",
+              "group": "t:common.groups.stars"
+            },
+            {
+              "value": "star_3",
+              "label": "t:common.options.star_3.label",
+              "group": "t:common.groups.stars"
+            },
+            {
+              "value": "star_4",
+              "label": "t:common.options.star_4.label",
+              "group": "t:common.groups.stars"
+            },
+            {
+              "value": "star_5",
+              "label": "t:common.options.star_5.label",
+              "group": "t:common.groups.stars"
+            },
+            {
+              "value": "star_6",
+              "label": "t:common.options.star_6.label",
+              "group": "t:common.groups.stars"
+            },
+            {
+              "value": "scalloped_circle_1",
+              "label": "t:common.options.scalloped_circle_1.label",
+              "group": "t:common.groups.scalloped_circles"
+            },
+            {
+              "value": "scalloped_circle_2",
+              "label": "t:common.options.scalloped_circle_2.label",
+              "group": "t:common.groups.scalloped_circles"
+            },
+            {
+              "value": "scalloped_circle_3",
+              "label": "t:common.options.scalloped_circle_3.label",
+              "group": "t:common.groups.scalloped_circles"
+            },
+            {
+              "value": "scalloped_circle_4",
+              "label": "t:common.options.scalloped_circle_4.label",
+              "group": "t:common.groups.scalloped_circles"
+            },
+            {
+              "value": "scalloped_circle_5",
+              "label": "t:common.options.scalloped_circle_5.label",
+              "group": "t:common.groups.scalloped_circles"
+            },
+            {
+              "value": "scalloped_circle_6",
+              "label": "t:common.options.scalloped_circle_6.label",
+              "group": "t:common.groups.scalloped_circles"
+            },
+            {
+              "value": "parallelogram",
+              "label": "t:common.options.parallelogram.label",
+              "group": "t:common.groups.square"
+            },
+            {
+              "value": "squircle",
+              "label": "t:common.options.squircle.label",
+              "group": "t:common.groups.square"
+            },
+            {
+              "value": "scalloped_square_1",
+              "label": "t:common.options.scalloped_square_1.label",
+              "group": "t:common.groups.square"
+            },
+            {
+              "value": "scalloped_square_2",
+              "label": "t:common.options.scalloped_square_2.label",
+              "group": "t:common.groups.square"
+            },
+            {
+              "value": "leaf",
+              "label": "t:common.options.leaf.label",
+              "group": "t:common.groups.square"
+            },
+            {
+              "value": "clipped_square",
+              "label": "t:common.options.clipped.label",
+              "group": "t:common.groups.square"
+            },
+            {
+              "value": "convex_square",
+              "label": "t:common.options.convex.label",
+              "group": "t:common.groups.square"
+            },
+            {
+              "value": "twisted_square",
+              "label": "t:common.options.twisted.label",
+              "group": "t:common.groups.square"
+            },
+            {
+              "value": "trapeze",
+              "label": "t:common.options.trapeze.label",
+              "group": "t:common.groups.square"
+            },
+            {
+              "value": "pinched",
+              "label": "t:common.options.pinched.label",
+              "group": "t:common.groups.square"
+            },
+            {
+              "value": "pixelated",
+              "label": "t:common.options.pixelated.label",
+              "group": "t:common.groups.square"
+            },
+            {
+              "value": "overlapped",
+              "label": "t:common.options.overlapped.label",
+              "group": "t:common.groups.square"
+            },
+            {
+              "value": "ellipse",
+              "label": "t:common.options.ellipse.label",
+              "group": "t:common.groups.wide"
+            },
+            {
+              "value": "diamond_wide",
+              "label": "t:common.options.diamond.label",
+              "group": "t:common.groups.wide"
+            },
+            {
+              "value": "rounded_diamond_wide",
+              "label": "t:common.options.rounded_diamond.label",
+              "group": "t:common.groups.wide"
+            },
+            {
+              "value": "triangle_wide",
+              "label": "t:common.options.triangle.label",
+              "group": "t:common.groups.wide"
+            },
+            {
+              "value": "hexagon_wide",
+              "label": "t:common.options.hexagon.label",
+              "group": "t:common.groups.wide"
+            },
+            {
+              "value": "rounded_hexagon_wide",
+              "label": "t:common.options.rounded_hexagon.label",
+              "group": "t:common.groups.wide"
+            },
+            {
+              "value": "uneven_star_wide",
+              "label": "t:common.options.uneven_star.label",
+              "group": "t:common.groups.wide"
+            },
+            {
+              "value": "star_wide",
+              "label": "t:common.options.star.label",
+              "group": "t:common.groups.wide"
+            },
+            {
+              "value": "semicircle",
+              "label": "t:common.options.semicircle.label",
+              "group": "t:common.groups.wide"
+            },
+            {
+              "value": "eye",
+              "label": "t:common.options.eye.label",
+              "group": "t:common.groups.wide"
+            },
+            {
+              "value": "parallelogram_wide",
+              "label": "t:common.options.parallelogram.label",
+              "group": "t:common.groups.wide"
+            },
+            {
+              "value": "ribbon",
+              "label": "t:common.options.ribbon.label",
+              "group": "t:common.groups.wide"
+            },
+            {
+              "value": "ticket_stub",
+              "label": "t:common.options.ticket_stub.label",
+              "group": "t:common.groups.wide"
+            },
+            {
+              "value": "wave_ribbon",
+              "label": "t:common.options.wave_ribbon.label",
+              "group": "t:common.groups.wide"
+            },
+            {
+              "value": "zig_zag_ribbon",
+              "label": "t:common.options.zig_zag_ribbon.label",
+              "group": "t:common.groups.wide"
+            }
+          ],
+          "default": "star_1"
+        },
+        {
+          "type": "select",
+          "id": "sticker_font_size",
+          "label": "t:common.settings.sticker_font_size.label",
+          "options": [
+            {
+              "value": "1rem",
+              "label": "t:common.options.extra_small.label"
+            },
+            {
+              "value": "1.25rem",
+              "label": "t:common.options.small.label"
+            },
+            {
+              "value": "1.563rem",
+              "label": "t:common.options.medium.label"
+            },
+            {
+              "value": "1.953rem",
+              "label": "t:common.options.large.label"
+            },
+            {
+              "value": "2.441rem",
+              "label": "t:common.options.extra_large.label"
+            }
+          ],
+          "default": "1.563rem",
+          "info": "t:common.settings.sticker_font_size.info"
+        },
+        {
+          "type": "header",
+          "content": "t:common.settings.header_custom_image"
+        },
+        {
+          "type": "paragraph",
+          "content": "t:common.blocks.sticker.settings.paragraph_using_an_image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:common.settings.image.label"
+        },
+        {
+          "type": "header",
+          "content": "t:common.settings.header_position"
+        },
+        {
+          "type": "range",
+          "id": "horizontal_position",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "t:common.blocks.sticker.settings.horizontal_position.label",
+          "default": 80
+        },
+        {
+          "type": "range",
+          "id": "vertical_position",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "t:common.blocks.sticker.settings.vertical_position.label",
+          "default": 80
+        },
+        {
+          "type": "range",
+          "id": "rotate",
+          "min": -90,
+          "max": 90,
+          "step": 2,
+          "unit": "deg",
+          "label": "t:common.settings.rotate.label",
+          "default": 0
+        },
+        {
+          "type": "header",
+          "content": "t:common.settings.header_layout"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_sticker_on_mobile",
+          "label": "t:common.blocks.sticker.settings.show_sticker_on_mobile.label",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_sticker_on_desktop",
+          "label": "t:common.blocks.sticker.settings.show_sticker_on_desktop.label",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "t:common.settings.header_animation"
+        },
+        {
+          "type": "select",
+          "id": "rotation_animation",
+          "label": "t:common.blocks.sticker.settings.rotation_animation.label",
+          "options": [
+            {
+              "value": "none",
+              "label": "t:common.blocks.sticker.settings.rotation_animation.options.no_rotation.label"
+            },
+            {
+              "value": "constantly_rotate",
+              "label": "t:common.blocks.sticker.settings.rotation_animation.options.constantly_rotate.label"
+            },
+            {
+              "value": "rotate_when_scrolling",
+              "label": "t:common.blocks.sticker.settings.rotation_animation.options.rotate_only_when_page_is_scrolling.label"
+            }
+          ],
+          "default": "none"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_parallax",
+          "label": "t:common.blocks.sticker.settings.enable_parallax.label",
+          "default": false,
+          "info": "t:common.blocks.sticker.settings.enable_parallax.info"
+        },
+        {
+          "type": "range",
+          "id": "parallax_speed",
+          "min": 1,
+          "max": 10,
+          "step": 1,
+          "label": "t:common.settings.parallax_speed.label",
+          "default": 3
+        },
+        {
+          "type": "header",
+          "content": "t:common.settings.header_color"
+        },
+        {
+          "type": "color_scheme",
+          "id": "color_scheme",
+          "default": "scheme1",
+          "label": "t:common.settings.color_scheme.label"
+        },
+        {
+          "type": "select",
+          "id": "color",
+          "label": "t:common.settings.background_color.label",
+          "default": "bg-scheme-accent-1 text-scheme-accent-1-contrast",
+          "options": [
+            {
+              "value": "bg-scheme-text text-scheme-text-contrast",
+              "label": "t:common.options.text.label"
+            },
+            {
+              "value": "bg-scheme-accent-1 text-scheme-accent-1-contrast",
+              "label": "t:common.options.accent_1.label"
+            },
+            {
+              "value": "bg-scheme-accent-2 text-scheme-accent-2-contrast",
+              "label": "t:common.options.accent_2.label"
+            },
+            {
+              "value": "bg-scheme-card text-scheme-card-text",
+              "label": "t:common.options.card.label"
+            },
+            {
+              "value": "bg-scheme-background text-scheme-text",
+              "label": "t:common.options.background.label"
+            },
+            {
+              "value": "bg-scheme-gradient text-scheme-text",
+              "label": "t:common.options.gradient.label"
+            }
+          ]
+        }
+      ]
     },
     {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "t:sections.all.padding.padding_bottom",
-      "default": 36
+      "name": "t:common.blocks.shape_divider.name",
+      "type": "shape_divider",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "select",
+          "label": "t:common.blocks.shape_divider.settings.target_section.label",
+          "id": "target_section",
+          "default": "above",
+          "options": [
+            {
+              "value": "above",
+              "label": "t:common.blocks.shape_divider.settings.target_section.options.section_above.label"
+            },
+            {
+              "value": "below",
+              "label": "t:common.blocks.shape_divider.settings.target_section.options.section_below.label"
+            }
+          ],
+          "info": "t:common.blocks.shape_divider.settings.target_section.info"
+        },
+        {
+          "type": "color_scheme",
+          "id": "target_section_color_scheme",
+          "default": "scheme1",
+          "label": "t:common.blocks.shape_divider.settings.target_section_color_scheme.label",
+          "info": "t:common.blocks.shape_divider.settings.target_section_color_scheme.info"
+        },
+        {
+          "type": "select",
+          "label": "t:common.blocks.shape_divider.settings.style.label",
+          "id": "style",
+          "default": "waves-1-patterned_1200x20",
+          "options": [
+            {
+              "value": "waves-1-patterned_1200x20",
+              "label": "t:common.blocks.shape_divider.settings.style.options.waves_1.label",
+              "group": "t:common.blocks.shape_divider.settings.style.group_patterned"
+            },
+            {
+              "value": "waves-2-patterned_1200x43",
+              "label": "t:common.blocks.shape_divider.settings.style.options.waves_2.label",
+              "group": "t:common.blocks.shape_divider.settings.style.group_patterned"
+            },
+            {
+              "value": "waves-3-patterned_1200x84",
+              "label": "t:common.blocks.shape_divider.settings.style.options.waves_3.label",
+              "group": "t:common.blocks.shape_divider.settings.style.group_patterned"
+            },
+            {
+              "value": "zig-zag-1-patterned_1200x21",
+              "label": "t:common.blocks.shape_divider.settings.style.options.zig_zag_1.label",
+              "group": "t:common.blocks.shape_divider.settings.style.group_patterned"
+            },
+            {
+              "value": "zig-zag-2-patterned_1200x37",
+              "label": "t:common.blocks.shape_divider.settings.style.options.zig_zag_2.label",
+              "group": "t:common.blocks.shape_divider.settings.style.group_patterned"
+            },
+            {
+              "value": "zig-zag-3-patterned_1200x65",
+              "label": "t:common.blocks.shape_divider.settings.style.options.zig_zag_3.label",
+              "group": "t:common.blocks.shape_divider.settings.style.group_patterned"
+            },
+            {
+              "value": "circles-1-patterned_1200x16",
+              "label": "t:common.blocks.shape_divider.settings.style.options.circles_1.label",
+              "group": "t:common.blocks.shape_divider.settings.style.group_patterned"
+            },
+            {
+              "value": "circles-2-patterned_1200x35",
+              "label": "t:common.blocks.shape_divider.settings.style.options.circles_2.label",
+              "group": "t:common.blocks.shape_divider.settings.style.group_patterned"
+            },
+            {
+              "value": "circles-3-patterned_1200x67",
+              "label": "t:common.blocks.shape_divider.settings.style.options.circles_3.label",
+              "group": "t:common.blocks.shape_divider.settings.style.group_patterned"
+            },
+            {
+              "value": "spikes-1-patterned_1200x132",
+              "label": "t:common.blocks.shape_divider.settings.style.options.spikes_1.label",
+              "group": "t:common.blocks.shape_divider.settings.style.group_patterned"
+            },
+            {
+              "value": "spikes-2-patterned_1200x132",
+              "label": "t:common.blocks.shape_divider.settings.style.options.spikes_2.label",
+              "group": "t:common.blocks.shape_divider.settings.style.group_patterned"
+            },
+            {
+              "value": "tilt-1-shape_1440x101",
+              "label": "t:common.blocks.shape_divider.settings.style.options.tilt_1.label",
+              "group": "t:common.settings.shape.label"
+            },
+            {
+              "value": "tilt-2-shape_1440x180",
+              "label": "t:common.blocks.shape_divider.settings.style.options.tilt_2.label",
+              "group": "t:common.settings.shape.label"
+            },
+            {
+              "value": "tilt-3-shape_1440x293",
+              "label": "t:common.blocks.shape_divider.settings.style.options.tilt_3.label",
+              "group": "t:common.settings.shape.label"
+            },
+            {
+              "value": "waves-1-shape_1440x261",
+              "label": "t:common.blocks.shape_divider.settings.style.options.waves_1.label",
+              "group": "t:common.settings.shape.label"
+            },
+            {
+              "value": "waves-2-shape_1440x330",
+              "label": "t:common.blocks.shape_divider.settings.style.options.waves_2.label",
+              "group": "t:common.settings.shape.label"
+            },
+            {
+              "value": "mountains-1-shape_1440x293",
+              "label": "t:common.blocks.shape_divider.settings.style.options.mountains_1.label",
+              "group": "t:common.settings.shape.label"
+            },
+            {
+              "value": "mountains-2-shape_1440x325",
+              "label": "t:common.blocks.shape_divider.settings.style.options.mountains_2.label",
+              "group": "t:common.settings.shape.label"
+            },
+            {
+              "value": "curve-shape_1440x149",
+              "label": "t:common.blocks.shape_divider.settings.style.options.curve.label",
+              "group": "t:common.settings.shape.label"
+            },
+            {
+              "value": "curve-inverse-shape_1440x149",
+              "label": "t:common.blocks.shape_divider.settings.style.options.curve_inverse.label",
+              "group": "t:common.settings.shape.label"
+            },
+            {
+              "value": "steps-1-shape_1400x105",
+              "label": "t:common.blocks.shape_divider.settings.style.options.steps_1.label",
+              "group": "t:common.settings.shape.label"
+            },
+            {
+              "value": "steps-2-shape_1400x105",
+              "label": "t:common.blocks.shape_divider.settings.style.options.steps_2.label",
+              "group": "t:common.settings.shape.label"
+            },
+            {
+              "value": "arrow-1-shape_1400x33",
+              "label": "t:common.blocks.shape_divider.settings.style.options.arrow_1.label",
+              "group": "t:common.settings.shape.label"
+            },
+            {
+              "value": "arrow-2-shape_1400x73",
+              "label": "t:common.blocks.shape_divider.settings.style.options.arrow_2.label",
+              "group": "t:common.settings.shape.label"
+            },
+            {
+              "value": "offset-ovals-shape_1400x155",
+              "label": "t:common.blocks.shape_divider.settings.style.options.offset_ovals.label",
+              "group": "t:common.settings.shape.label"
+            },
+            {
+              "value": "triangle-shape_1400x145",
+              "label": "t:common.blocks.shape_divider.settings.style.options.triangle.label",
+              "group": "t:common.settings.shape.label"
+            },
+            {
+              "value": "triangle-asymmetrical-shape_1400x145",
+              "label": "t:common.blocks.shape_divider.settings.style.options.triangle_asymmetrical.label",
+              "group": "t:common.settings.shape.label"
+            },
+            {
+              "value": "clouds-shape_1400x161",
+              "label": "t:common.blocks.shape_divider.settings.style.options.clouds.label",
+              "group": "t:common.settings.shape.label"
+            }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "flip_horizontal",
+          "label": "t:common.blocks.shape_divider.settings.flip_horizontal.label"
+        },
+        {
+          "type": "header",
+          "content": "t:common.settings.header_animation"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_animation",
+          "label": "t:common.blocks.shape_divider.settings.enable_animation.label",
+          "info": "t:common.blocks.shape_divider.settings.enable_animation.info"
+        },
+        {
+          "type": "select",
+          "id": "animation_direction",
+          "label": "t:common.blocks.shape_divider.settings.animation_direction.label",
+          "options": [
+            {
+              "value": "",
+              "label": "t:common.options.right_to_left.label"
+            },
+            {
+              "value": "reverse",
+              "label": "t:common.options.left_to_right.label"
+            }
+          ],
+          "default": ""
+        }
+      ]
     }
   ],
   "presets": [
     {
-      "name": "t:sections.featured-collection.presets.name"
+      "name": "t:sections.featured_collection.name"
     }
-  ]
+  ],
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer",
+      "aside"
+    ]
+  }
 }
 {% endschema %}

@@ -8,52 +8,62 @@
  * ------------------------------------------------------------
  */
 {
-  "name": "t:sections.footer.name",
   "type": "footer",
+  "name": "Footer",
   "sections": {
-    "menu_blocks_Yta4qj": {
-      "type": "menu-blocks",
+    "footer": {
+      "type": "footer",
       "blocks": {
-        "group_np3Bih": {
-          "type": "group",
+        "logo_WxQFDe": {
+          "type": "logo",
           "settings": {
-            "links": "my-menu-1"
+            "logo": "shopify://shop_images/PROWL_FINALS_PRIMARY_PINK.png",
+            "logo_max_width": 400
           }
         },
-        "group_RKjEXW": {
-          "type": "group",
+        "newsletter_La4dL9": {
+          "type": "newsletter",
           "settings": {
-            "links": "my-menu-2"
+            "newsletter_heading": "Join the Prowl"
+          }
+        },
+        "menus-0": {
+          "type": "menus",
+          "settings": {
+            "show_menu_headings": false,
+            "linklist_1": "footer-menu",
+            "linklist_2": "footer",
+            "linklist_3": ""
+          }
+        },
+        "tagline-and-social-links-0": {
+          "type": "tagline_and_social_links",
+          "settings": {
+            "tagline": "Find us on socials @prowloutdoors",
+            "show_social_icons": true
           }
         }
       },
       "block_order": [
-        "group_np3Bih",
-        "group_RKjEXW"
+        "logo_WxQFDe",
+        "newsletter_La4dL9",
+        "menus-0",
+        "tagline-and-social-links-0"
       ],
-      "name": "Menu Blocks",
-      "settings": {}
-    },
-    "footer": {
-      "type": "footer",
+      "custom_css": [
+        ".secondary-text-link {font-weight: bold;}",
+        ".inline-rte {font-family: \"Dallas\"; font-weight: bold;}"
+      ],
       "settings": {
-        "color_scheme": "scheme-1",
-        "newsletter_enable": true,
-        "newsletter_heading": "Subscribe to our emails",
-        "enable_follow_on_shop": true,
-        "show_social": true,
-        "enable_country_selector": true,
-        "enable_language_selector": true,
-        "payment_enable": true,
-        "show_policy": true,
-        "margin_top": 0,
-        "padding_top": 36,
-        "padding_bottom": 36
+        "show_payment_icons": true,
+        "show_country_selector": true,
+        "show_locale_selector": true,
+        "color_scheme": "scheme2",
+        "use_gradient_background": true
       }
     }
   },
   "order": [
-    "menu_blocks_Yta4qj",
     "footer"
   ]
 }

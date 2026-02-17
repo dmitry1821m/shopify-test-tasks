@@ -1,0 +1,107 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "max_width": "medium",
+        "display_on_card": false,
+        "color_scheme": "",
+        "use_gradient_background": false
+      }
+    },
+    "faq_aEpVkJ": {
+      "type": "faq",
+      "blocks": {
+        "question_d3TAmh": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "title": "What is your return & exchange policy?",
+            "answer": "<p>At Prowl, we want you to love your purchase. If for any reason you need to return or exchange an item, here’s how it works:</p><p><strong>1. Eligibility</strong></p><ul><li>Items must be unworn, unwashed, unaltered, and with original tags attached.</li><li>Items with makeup, odors, deodorant, stains, or hair are considered damaged and cannot be accepted.</li><li>Returns must be initiated <strong>within 30 days</strong> of your order date.</li></ul><p><strong>2. How to Request a Return or Exchange</strong></p><ul><li>Email us at hello@prowloutdoors.com to request a return or exchange.</li><li>We will provide a return shipping label within 72 hours.</li></ul><p><strong>3. Shipping Costs</strong></p><ul><li>US exchanges are free.</li><li>US returns are currently free.</li><li>Original shipping costs are non-refundable.</li></ul><p><strong>4. Processing Returns</strong></p><ul><li>Once your return is received and inspected, we will email you to confirm receipt.</li><li>Approved refunds will be issued to your original payment method.</li><li>Refunds may take up to 10 business days to appear on your account, depending on your payment provider.</li></ul><p><strong>5. Non-Eligible Returns</strong></p><ul><li>Items that do not meet our policy will be returned to you.</li><li>We reserve the right to refuse returns showing signs of wear or damage.</li></ul>"
+          }
+        },
+        "question_gVLbLp": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "title": "How do I initiate a return or exchange?",
+            "answer": "<p>To request a return or exchange please email hello@prowloutdoors.com and we will respond with a return label within 72 hours. </p><p>Please review our return and exchange policy in detail. We must receive your returned item(s) within 30 days of your order date to be eligible for a return or exchange.</p>"
+          }
+        },
+        "question_y69wVU": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "title": "How should I prepare my return or exchange?",
+            "answer": "<p>Keep the item unworn, unwashed, unaltered, with original tags. Ensure it’s free from stains, odors, or hair. Pack securely in original packaging if possible.</p>"
+          }
+        },
+        "question_9rmTyX": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "title": "When can I expect a refund?",
+            "answer": "<p>Refunds can take up to 10 working days to show on your account due to varying processing times between payment providers.</p>"
+          }
+        },
+        "question_LG9MFG": {
+          "type": "question",
+          "settings": {
+            "icon": "none",
+            "title": "What if I receive a defective or damaged item?",
+            "answer": "<p>We’re sorry if your item arrives damaged or with a defect. Please contact us immediately at <a><strong>hello@prowloutdoors.com</strong></a> with your order number and photos of the issue.</p><p>We will provide a prepaid return label and either:</p><ul><li>Send you a replacement item, or</li><li>Issue a full refund, depending on your preference.</li></ul>"
+          }
+        }
+      },
+      "block_order": [
+        "question_d3TAmh",
+        "question_gVLbLp",
+        "question_y69wVU",
+        "question_9rmTyX",
+        "question_LG9MFG"
+      ],
+      "settings": {
+        "display_on_card": false,
+        "heading_text_style": "heading",
+        "two_columns_desktop": false,
+        "title": "Returns & Exchanges",
+        "richtext": "",
+        "color_scheme": "",
+        "use_gradient_background": false
+      }
+    },
+    "rich_text_ygF7yA": {
+      "type": "rich-text",
+      "custom_css": [
+        ".rte h3 {font-family: \"Perfectly Nineties\"; text-transform: none;}",
+        ".rte p {font-family: \"Dallas\";}"
+      ],
+      "settings": {
+        "title": "READY TO SHOP HEADLINE?",
+        "heading_size": "heading-standard",
+        "rich_text": "<h3>Additional copy here <em>nudging </em>the buyer to <em>start</em> shopping</h3><p><strong>Or use this sans serif font</strong></p>",
+        "display_on_card": false,
+        "content_width_desktop": "lg:w-2/3",
+        "button_link": "shopify://products/merino-wool",
+        "button_label": "SHOP NOW",
+        "color_scheme": "scheme-430c6038-8c15-4711-a4d5-ce6c88699a21",
+        "use_gradient_background": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "faq_aEpVkJ",
+    "rich_text_ygF7yA"
+  ]
+}

@@ -1,0 +1,276 @@
+{%- liquid
+  assign section_heading = section.settings.heading
+  assign section_text = section.settings.text
+  assign section_image = section.settings.image
+  assign item_blocks = section.blocks | where: 'type', 'feature'
+-%}
+
+{{ 'dev-features-with-image.css' | asset_url | stylesheet_tag }}
+
+<section class="dev-features-section" id="DevFeatures-{{ section.id }}">
+  <div class="dev-features-section__top">
+    {%- if section_heading != blank -%}
+      <h2 class="dev-features-section__heading" data-aos="fade-up" data-aos-duration="600" data-aos-once="true">{{ section_heading | escape }}</h2>
+    {%- endif -%}
+    {%- if section_text != blank -%}
+      <div class="dev-features-section__text" data-aos="fade-up" data-aos-duration="600" data-aos-delay="100" data-aos-once="true">
+        {{ section_text }}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="dev-features-section__main">
+    <div class="dev-features-section__image-wrap" data-aos="fade-up" data-aos-duration="600" data-aos-delay="200" data-aos-once="true">
+      {%- if section_image != blank -%}
+        {%- assign section_image_alt = section_heading | default: 'Section image' | escape -%}
+        {%- if section_image.alt != blank -%}
+          {%- assign section_image_alt = section_image.alt | escape -%}
+        {%- endif -%}
+        <img
+          src="{{ section_image | image_url: width: 800 }}"
+          alt="{{ section_image_alt }}"
+          class="dev-features-section__image"
+          loading="lazy"
+          width="800"
+        >
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Cards: absolute around image on wide screens; slider when width <= 1130px {%- endcomment -%}
+    <div class="dev-features-section__cards-slider-wrap">
+      <div class="dev-features-section__cards-slider" id="dev-features-slider-{{ section.id }}">
+        <div class="dev-features-section__cards-track">
+        {%- for block in item_blocks -%}
+          {%- assign pos_index = forloop.index0 -%}
+          {%- if pos_index == 0 -%}
+            {%- assign card_position = 'left-top' -%}
+          {%- elsif pos_index == 1 -%}
+            {%- assign card_position = 'left-mid' -%}
+          {%- elsif pos_index == 2 -%}
+            {%- assign card_position = 'left-bottom' -%}
+          {%- elsif pos_index == 3 -%}
+            {%- assign card_position = 'right-top' -%}
+          {%- elsif pos_index == 4 -%}
+            {%- assign card_position = 'right-mid' -%}
+          {%- else -%}
+            {%- assign card_position = 'right-bottom' -%}
+          {%- endif -%}
+          {%- assign animation_delay = 350 | plus: forloop.index0 | times: 80 -%}
+          {%- render 'dev-feature-card', block: block, position: card_position, animation_delay: animation_delay -%}
+        {%- endfor -%}
+        </div>
+      </div>
+      <nav class="dev-features-section__slider-nav" aria-label="Slider navigation">
+        <button type="button" class="dev-features-section__slider-btn dev-features-section__slider-btn--prev" aria-label="Previous">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M10.9096 20.8192L1 10.9096M1 10.9096L10.9096 1M1 10.9096H20.8192" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button type="button" class="dev-features-section__slider-btn dev-features-section__slider-btn--next" aria-label="Next">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <g transform="translate(22,0) scale(-1,1)">
+              <path d="M10.9096 20.8192L1 10.9096M1 10.9096L10.9096 1M1 10.9096H20.8192" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  var sliderId = 'dev-features-slider-{{ section.id }}';
+
+  function initSlider() {
+    var slider = document.getElementById(sliderId);
+    if (!slider || slider.dataset.sliderInited === 'true') return;
+
+    var wrap = slider.closest('.dev-features-section__cards-slider-wrap');
+    if (!wrap) return;
+
+    var track = slider.querySelector('.dev-features-section__cards-track');
+    var prevBtn = wrap.querySelector('.dev-features-section__slider-btn--prev');
+    var nextBtn = wrap.querySelector('.dev-features-section__slider-btn--next');
+
+    function getScrollStep() {
+      if (track && track.firstElementChild) {
+        var card = track.firstElementChild;
+        var style = window.getComputedStyle(track);
+        var gap = parseFloat(style.gap) || 16;
+        var w = card.offsetWidth + gap;
+        if (w > 0) return w;
+      }
+      return 336;
+    }
+
+    function getCurrentSlideIndex() {
+      var step = getScrollStep();
+      if (step <= 0) return 0;
+      return Math.round(slider.scrollLeft / step);
+    }
+
+    function scrollPrev() {
+      var step = getScrollStep();
+      var index = getCurrentSlideIndex();
+      var target = Math.max(0, (index - 1) * step);
+      slider.scrollTo({ left: target, behavior: 'smooth' });
+    }
+    function scrollNext() {
+      var step = getScrollStep();
+      var maxScroll = slider.scrollWidth - slider.clientWidth;
+      if (maxScroll <= 0) return;
+      var index = getCurrentSlideIndex();
+      var nextIndex = index + 1;
+      var target = Math.min(maxScroll, nextIndex * step);
+      slider.scrollTo({ left: target, behavior: 'smooth' });
+    }
+
+    function updateArrows() {
+      var maxScroll = slider.scrollWidth - slider.clientWidth;
+      var index = getCurrentSlideIndex();
+      var atStart = index <= 0;
+      var atEnd = maxScroll <= 0 || slider.scrollLeft >= maxScroll - 1;
+      if (prevBtn) {
+        prevBtn.disabled = atStart;
+        prevBtn.classList.toggle('is-disabled', atStart);
+        prevBtn.setAttribute('aria-disabled', atStart ? 'true' : 'false');
+      }
+      if (nextBtn) {
+        nextBtn.disabled = atEnd;
+        nextBtn.classList.toggle('is-disabled', atEnd);
+        nextBtn.setAttribute('aria-disabled', atEnd ? 'true' : 'false');
+      }
+    }
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (this.disabled) return;
+        scrollPrev();
+      });
+    }
+    if (nextBtn) {
+      nextBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (this.disabled) return;
+        scrollNext();
+      });
+    }
+
+    slider.addEventListener('scroll', updateArrows);
+    window.addEventListener('resize', updateArrows);
+    updateArrows();
+
+    var startX, startScrollLeft;
+    function start(e) {
+      startX = e.pageX !== undefined ? e.pageX : (e.touches && e.touches[0] ? e.touches[0].pageX : 0);
+      startScrollLeft = slider.scrollLeft;
+      slider.classList.add('is-dragging');
+    }
+    function move(e) {
+      if (!slider.classList.contains('is-dragging')) return;
+      var x = e.pageX !== undefined ? e.pageX : (e.touches && e.touches[0] ? e.touches[0].pageX : startX);
+      slider.scrollLeft = startScrollLeft + (startX - x);
+      if (e.touches) e.preventDefault();
+    }
+    function end() {
+      slider.classList.remove('is-dragging');
+    }
+
+    slider.addEventListener('mousedown', function(e) {
+      if (e.button === 0) {
+        e.preventDefault();
+        start(e);
+      }
+    });
+    document.addEventListener('mousemove', move);
+    document.addEventListener('mouseup', end);
+    document.addEventListener('mouseleave', end);
+    slider.addEventListener('touchstart', start, { passive: true });
+    slider.addEventListener('touchmove', move, { passive: false });
+    slider.addEventListener('touchend', end);
+    slider.addEventListener('touchcancel', end);
+
+    slider.dataset.sliderInited = 'true';
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSlider);
+  } else {
+    initSlider();
+  }
+  document.addEventListener('shopify:section:load', function() {
+    var slider = document.getElementById(sliderId);
+    if (slider) slider.removeAttribute('data-slider-inited');
+    initSlider();
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Dev Features with Image",
+  "tag": "section",
+  "class": "dev-features-with-image-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "MADE FOR WOMEN, BY WOMEN"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Outdoor gear shouldn't ask you to choose between style and performance. This jumpsuit delivers both: <strong>confidence</strong> and <strong>ease</strong> in a one-piece design that moves with you, keeps you warm, and looks good doing it.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "richtext",
+          "id": "heading",
+          "label": "Heading",
+          "default": "<p><strong>One piece, zero bulk</strong></p>"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>A streamlined baselayer that replaces multiple layers without added weight.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Dev Features with Image",
+      "blocks": [
+        { "type": "feature", "settings": { "heading": "<p><strong>One piece, zero bulk</strong></p>", "text": "<p>A streamlined baselayer that replaces multiple layers without added weight.</p>" } },
+        { "type": "feature", "settings": { "heading": "<p><strong>Temperature-regulating warmth</strong></p>", "text": "<p>Merino wool adapts to your body, keeping you comfortable as conditions shift.</p>" } },
+        { "type": "feature", "settings": { "heading": "<p><strong>Moisture-wicking performance</strong></p>", "text": "<p>Moves sweat away to help keep you dry and warm.</p>" } },
+        { "type": "feature", "settings": { "heading": "<p><strong>Bathroom breaks made easy</strong></p>", "text": "<p>Designed for real needs, so quick changes don't interrupt your day.</p>" } },
+        { "type": "feature", "settings": { "heading": "<p><strong>Soft, breathable feel</strong></p>", "text": "<p>Naturally breathable fibers allow airflow while staying soft against the skin.</p>" } },
+        { "type": "feature", "settings": { "heading": "<p><strong>Built for long days</strong></p>", "text": "<p>Made for extended wear, movement, and all-day comfort.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

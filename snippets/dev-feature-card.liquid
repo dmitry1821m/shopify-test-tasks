@@ -1,0 +1,31 @@
+{%- liquid
+  assign card_icon = block.settings.icon
+  assign card_heading = block.settings.heading
+  assign card_text = block.settings.text
+  assign icon_alt = card_heading | strip_html | default: 'Feature' | escape
+  assign card_position = position | default: ''
+  assign animation_delay = animation_delay | default: nil
+-%}
+
+<div class="dev-feature-card {% if card_position != blank %}dev-feature-card--{{ card_position }}{% endif %}" {{ block.shopify_attributes }}{% if animation_delay != nil %} data-aos="fade-up" data-aos-duration="500" data-aos-delay="{{ animation_delay }}" data-aos-once="true"{% endif %}>
+  {%- if card_icon != blank -%}
+    <div class="dev-feature-card__icon-wrap">
+      <img
+        src="{{ card_icon | image_url: width: 120 }}"
+        alt="{{ icon_alt }}"
+        class="dev-feature-card__icon"
+        loading="lazy"
+        width="120"
+        height="120"
+      >
+    </div>
+  {%- endif -%}
+  <div class="dev-feature-card__body">
+    {%- if card_heading != blank -%}
+      <div class="dev-feature-card__heading">{{ card_heading }}</div>
+    {%- endif -%}
+    {%- if card_text != blank -%}
+      <div class="dev-feature-card__text">{{ card_text }}</div>
+    {%- endif -%}
+  </div>
+</div>

@@ -1,0 +1,49 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "max_width": "medium",
+        "display_on_card": false,
+        "color_scheme": "",
+        "use_gradient_background": false
+      }
+    },
+    "image_with_text_eMxNxw": {
+      "type": "image-with-text",
+      "settings": {
+        "display_on_card": false,
+        "image": "shopify://shop_images/ATTEN-2024-12-20-_ON_MODEL_5760.jpg",
+        "crop": "",
+        "image_shape": "default",
+        "blob_type": 1,
+        "rotate_image": 0,
+        "image_position": "right",
+        "image_size": "half",
+        "disable_media_style": false,
+        "title": "About us / Why we made this / some headline here",
+        "heading_size": "heading-standard",
+        "richtext": "<p>Info about why this brand was built. </p><p>Can include some stuff about fabric qual too.</p>",
+        "text_alignment": "text-left",
+        "button_link": "shopify://products/merino-wool",
+        "button_label": "Shop Now",
+        "color_scheme": "",
+        "use_gradient_background": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "image_with_text_eMxNxw"
+  ]
+}

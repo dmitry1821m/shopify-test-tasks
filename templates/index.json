@@ -9,229 +9,599 @@
  */
 {
   "sections": {
-    "sport_products": {
-      "type": "sport-products",
+    "dev_hero_rG8Hcz": {
+      "type": "dev-hero",
+      "name": "Dev Hero",
+      "settings": {
+        "desktop_image": "shopify://shop_images/new-hero-image.webp",
+        "mobile_image": "shopify://shop_images/new-upscaled-mobile-image.webp",
+        "heading": "ONE PIECE. INFINITE ADVENTURE.",
+        "text": "<p>The merino wool jumpsuit built for <em>anything</em>.</p>",
+        "button_content": "SHOP THE DROP",
+        "button_url": "shopify://products/merino-wool",
+        "bar_height_to_subtract": 64
+      }
+    },
+    "dev_feature_bar_KUmyDn": {
+      "type": "dev-feature-bar",
       "blocks": {
-        "block_1": {
-          "type": "product_block",
+        "feature_yFeRcQ": {
+          "type": "feature",
           "settings": {
-            "product": "audio-technica-ath-m50x"
+            "icon": "shopify://shop_images/All_day_comfort.svg",
+            "label": "ALL DAY COMFORT"
           }
         },
-        "block_2": {
-          "type": "info_block",
+        "feature_jaCHhg": {
+          "type": "feature",
           "settings": {
-            "icon": "✓",
-            "title": "Science-formulated",
-            "description": "BCAAs and Collagen in precise daily doses your body actually uses."
+            "icon": "shopify://shop_images/Thoughtfully_Designed_Details.svg",
+            "label": "THOUGHTFULLY DESIGNED DETAILS"
           }
         },
-        "block_3": {
-          "type": "product_block",
+        "feature_XybL4a": {
+          "type": "feature",
           "settings": {
-            "product": "beats-solo-4-headphones"
+            "icon": "shopify://shop_images/Moisture-Wicking_Odor-Resistant.svg",
+            "label": "MOISTURE-WICKING & ODOR-RESISTANT"
           }
         },
-        "block_4": {
-          "type": "info_block",
+        "feature_KwEbN7": {
+          "type": "feature",
           "settings": {
-            "icon": "☆",
-            "title": "Made for daily performance",
-            "description": "Athlete approved"
-          }
-        },
-        "block_5": {
-          "type": "product_block",
-          "settings": {
-            "product": "bose-quietcomfort-ultra-headphones"
-          }
-        },
-        "block_6": {
-          "type": "info_block",
-          "settings": {
-            "icon": "☂︎",
-            "title": "What is Lorem Ipsum?",
-            "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-          }
-        },
-        "block_7": {
-          "type": "product_block",
-          "settings": {
-            "product": "sony-wh-1000xm6-wireless"
-          }
-        },
-        "block_8": {
-          "type": "info_block",
-          "settings": {
-            "icon": "♨︎",
-            "title": "Why do we use it?",
-            "description": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout."
+            "icon": "shopify://shop_images/Made_to_Move.svg",
+            "label": "MADE TO MOVE"
           }
         }
       },
       "block_order": [
-        "block_1",
-        "block_2",
-        "block_3",
-        "block_4",
-        "block_5",
-        "block_6",
-        "block_7",
-        "block_8"
+        "feature_yFeRcQ",
+        "feature_jaCHhg",
+        "feature_XybL4a",
+        "feature_KwEbN7"
       ],
-      "settings": {
-        "heading": "Thousands switching from powders to performance gummies"
-      }
+      "name": "Dev Feature Bar",
+      "settings": {}
     },
-    "sport_blocks": {
-      "type": "sport-blocks",
+    "dev_features_with_image_gWa6Jr": {
+      "type": "dev-features-with-image",
       "blocks": {
-        "block_1": {
-          "type": "block",
+        "feature_BEL8Pf": {
+          "type": "feature",
           "settings": {
-            "image": "shopify://shop_images/rack-of-womens-clothing.jpg",
-            "title": "Strength & Power (ATP Regeneration)",
-            "description": "Accelerating cellular ATP regeneration for explosive power."
+            "icon": "shopify://shop_images/One_piece_zero_bulk.svg",
+            "heading": "<p><em>One piece, zero bulk</em></p>",
+            "text": "<p>A streamlined baselayer that replaces multiple layers without added weight.</p>"
           }
         },
-        "block_2": {
-          "type": "block",
+        "feature_DKYJnt": {
+          "type": "feature",
           "settings": {
-            "image": "shopify://shop_images/retail-shopping-package.jpg",
-            "title": "Muscle Recovery (Leucine-Triggered MPS)",
-            "description": "Triggering protein synthesis for faster muscle repair."
+            "icon": "shopify://shop_images/Temperature-regulating_warmth.svg",
+            "heading": "<p><em>Temperature-regulating warmth</em></p>",
+            "text": "<p>Merino wool adapts to your body, keeping you comfortable as conditions shift.</p>"
           }
         },
-        "block_3": {
-          "type": "block",
+        "feature_cgAB4H": {
+          "type": "feature",
           "settings": {
-            "image": "shopify://shop_images/small-business-interior.jpg",
-            "title": "Joint + Connective Repair",
-            "description": "Structural reinforcement for tendons and cartilage."
+            "icon": "shopify://shop_images/Moisture-wicking_performance.svg",
+            "heading": "<p><em>Moisture-wicking performance</em></p>",
+            "text": "<p>Moves sweat away to help keep you dry and warm.</p>"
           }
         },
-        "block_4": {
-          "type": "block",
+        "feature_FgcVcL": {
+          "type": "feature",
           "settings": {
-            "image": "shopify://shop_images/iphone-detects-qr-code.jpg",
-            "title": "Test 4th item",
-            "description": "Test 3 columns without fixed rows"
+            "icon": "shopify://shop_images/Bathroom_breaks_made_easy.svg",
+            "heading": "<p><em>Bathroom breaks made easy</em></p>",
+            "text": "<p>Designed for real needs, so quick changes don't interrupt your day.</p>"
+          }
+        },
+        "feature_jTUBz9": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/Soft_breathable_feel.svg",
+            "heading": "<p><em>Soft, breathable feel</em></p>",
+            "text": "<p>Naturally breathable fibers allow airflow while staying soft against the skin.</p>"
+          }
+        },
+        "feature_Arbde4": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/Built_for_long_days.svg",
+            "heading": "<p><em>Built for long days</em></p>",
+            "text": "<p>Made for extended wear, movement, and all-day comfort.</p>"
           }
         }
       },
       "block_order": [
-        "block_1",
-        "block_2",
-        "block_3",
-        "block_4"
+        "feature_BEL8Pf",
+        "feature_DKYJnt",
+        "feature_cgAB4H",
+        "feature_FgcVcL",
+        "feature_jTUBz9",
+        "feature_Arbde4"
       ],
+      "name": "Dev Features with Image",
       "settings": {
-        "heading": "Product stack"
+        "heading": "MADE FOR WOMEN, BY WOMEN",
+        "text": "<p>Outdoor gear shouldn't ask you to choose between style and performance. This jumpsuit delivers both: <em>confidence</em> and <em>ease</em> in a one-piece design that moves with you, keeps you warm, and looks good doing it.</p>",
+        "image": "shopify://shop_images/MADE_FOR_WOMEN_BY_WOMEN.webp"
       }
     },
-    "music_hero": {
-      "type": "music-hero",
+    "image_with_text": {
+      "type": "image-with-text",
+      "disabled": true,
       "settings": {
-        "background_image": "shopify://shop_images/wp2551273.jpg",
-        "heading": "Radeckt: Global\nsound meets\nadvanced digital\nstrategy",
-        "description": "From melodic house to indie dance & techno - Radeckt delivers hypnotic club anthems and heads-down floor fillers, supported by the world's most influential selectors.",
-        "button_text": "Get Early Access",
-        "button_link": "shopify://pages/contact"
-      }
-    },
-    "music_about": {
-      "type": "music-about",
-      "settings": {
-        "column_left_image": "shopify://shop_images/person-stands-on-rocks-poking-out-of-the-ocean-shoreline.jpg",
-        "column_left_heading": "Radeckt",
-        "column_right_image": "shopify://shop_images/person-fishing-on-the-beach-is-silhouetted-at-sunset.jpg",
-        "column_right_heading": "About Radeckt",
-        "column_right_description": "A rising force in the underground house scene, Radeckt blends melodic house, indie dance and techno into hypnotic, club-driven records played worldwide.\n\nHis releases span key labels including Human by Default (Bedouin), Marginalia (Eli & Fur), AZZUR, Renaissance, Out of Options and Ultra, with standout tracks like Otun, Radiate (Remix) and Take Down.",
-        "button_text": "About",
-        "button_link": "shopify://pages/contact"
-      }
-    },
-    "music_releases": {
-      "type": "music-releases",
-      "blocks": {
-        "release_1": {
-          "type": "release",
-          "settings": {
-            "image": "shopify://shop_images/a-bridge-sitting-in-thick-pink-and-purple-fog.jpg",
-            "title": "Agustin Giri & Last Men on Earth",
-            "subtitle": "Radeckt & Ida Corr \"Midnight\""
-          }
-        },
-        "release_2": {
-          "type": "release",
-          "settings": {
-            "image": "shopify://shop_images/flatlay-of-jade-face-roller-laying-on-a-grey-stone.jpg",
-            "title": "Otun",
-            "subtitle": "Radeckt"
-          }
-        },
-        "release_3": {
-          "type": "release",
-          "settings": {
-            "image": "shopify://shop_images/green-and-white-marbled-coloring.jpg",
-            "title": "Like Dat",
-            "subtitle": "Radeckt + Aikon"
-          }
-        },
-        "release_4": {
-          "type": "release",
-          "settings": {
-            "image": "shopify://shop_images/two-people-surfing-in-blue-choppy-water.jpg",
-            "title": "Test 4th item",
-            "subtitle": "Test 3 columns without fixed rows"
-          }
-        }
-      },
-      "block_order": [
-        "release_1",
-        "release_2",
-        "release_3",
-        "release_4"
-      ],
-      "settings": {
-        "heading": "Key Releases"
-      }
-    },
-    "featured_collection": {
-      "type": "featured-collection",
-      "settings": {
-        "collection": "all",
-        "products_to_show": 8,
-        "title": "Featured products",
-        "heading_size": "h2",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "columns_desktop": 4,
-        "enable_desktop_slider": false,
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "color_scheme": "scheme-1",
-        "image_ratio": "adapt",
+        "display_on_card": false,
+        "crop": "",
         "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "columns_mobile": "2",
-        "swipe_on_mobile": false,
-        "padding_top": 44,
-        "padding_bottom": 36
+        "blob_type": 1,
+        "rotate_image": 0,
+        "image_position": "right",
+        "image_size": "half",
+        "disable_media_style": true,
+        "title": "Image with text",
+        "heading_size": "heading-feature",
+        "richtext": "",
+        "text_alignment": "text-left",
+        "button_link": "",
+        "button_label": "Shop Now",
+        "color_scheme": "",
+        "use_gradient_background": false
+      }
+    },
+    "rich_text_minqnC": {
+      "type": "rich-text",
+      "disabled": true,
+      "custom_css": [
+        ".rte h3 {font-family: \"Perfectly Nineties\"; text-transform: none;}"
+      ],
+      "settings": {
+        "title": "made for women, by women.",
+        "heading_size": "heading-standard",
+        "rich_text": "<h3>Performance apparel to match your <em>style</em> and <em>strength</em>.</h3>",
+        "display_on_card": false,
+        "content_width_desktop": "lg:w-2/3",
+        "button_link": "",
+        "button_label": "Shop Now",
+        "color_scheme": "",
+        "use_gradient_background": false
+      }
+    },
+    "image_with_highlights": {
+      "type": "image-with-highlights",
+      "blocks": {
+        "highlight_AypNFh": {
+          "type": "highlight",
+          "settings": {
+            "title": "",
+            "text": "One-piece, zero bulk.",
+            "cta_link": "",
+            "cta_text": "",
+            "override_section_color_scheme": false,
+            "color_scheme": ""
+          }
+        },
+        "highlight_7GEFce": {
+          "type": "highlight",
+          "settings": {
+            "title": "",
+            "text": "Bathroom breaks made easy.",
+            "cta_link": "",
+            "cta_text": "",
+            "override_section_color_scheme": false,
+            "color_scheme": ""
+          }
+        },
+        "highlight_HrMPHb": {
+          "type": "highlight",
+          "settings": {
+            "title": "",
+            "text": "Temperature-regulating warmth.",
+            "cta_link": "",
+            "cta_text": "",
+            "override_section_color_scheme": false,
+            "color_scheme": ""
+          }
+        },
+        "highlight_YcthG9": {
+          "type": "highlight",
+          "settings": {
+            "title": "",
+            "text": "Soft, breathable feel.",
+            "cta_link": "",
+            "cta_text": "",
+            "override_section_color_scheme": false,
+            "color_scheme": ""
+          }
+        },
+        "highlight_EAYJTm": {
+          "type": "highlight",
+          "settings": {
+            "title": "",
+            "text": "Moisture-wicking performance.",
+            "cta_link": "",
+            "cta_text": "",
+            "override_section_color_scheme": false,
+            "color_scheme": ""
+          }
+        },
+        "highlight_VTjGz9": {
+          "type": "highlight",
+          "settings": {
+            "title": "",
+            "text": "Built for long days.",
+            "cta_link": "",
+            "cta_text": "",
+            "override_section_color_scheme": false,
+            "color_scheme": ""
+          }
+        }
+      },
+      "block_order": [
+        "highlight_AypNFh",
+        "highlight_7GEFce",
+        "highlight_HrMPHb",
+        "highlight_YcthG9",
+        "highlight_EAYJTm",
+        "highlight_VTjGz9"
+      ],
+      "disabled": true,
+      "custom_css": [
+        ".section-content {padding-top: 0;}"
+      ],
+      "settings": {
+        "title": "",
+        "block_alignment_on_desktop": "justify-center",
+        "display_on_card": true,
+        "slideshow_on_mobile": true,
+        "slideshow_focus": "center",
+        "image": "shopify://shop_images/ATTEN-2024-12-20-_ON_MODEL_5705.jpg",
+        "max_width": 500,
+        "crop": "",
+        "image_shape": "default",
+        "blob_type": 1,
+        "rotate_image": 0,
+        "disable_media_style": false,
+        "color_scheme": "scheme1",
+        "use_gradient_background": false
+      }
+    },
+    "scrolling_text_with_icons": {
+      "type": "scrolling-text-with-icons",
+      "blocks": {
+        "text_xa488F": {
+          "type": "text",
+          "settings": {
+            "text": "Ultimate Temperature Control",
+            "icon": "none"
+          }
+        },
+        "text_EMWNJx": {
+          "type": "text",
+          "settings": {
+            "text": "All-Day Comfort",
+            "icon": "none"
+          }
+        },
+        "text_43EPnp": {
+          "type": "text",
+          "settings": {
+            "text": "Moisture-Wicking & Odor-Resistant",
+            "icon": "none"
+          }
+        },
+        "text_bqDVT6": {
+          "type": "text",
+          "settings": {
+            "text": "Made to Move",
+            "icon": "none"
+          }
+        },
+        "text_c6tHKP": {
+          "type": "text",
+          "settings": {
+            "text": "Thoughtfully Designed Details",
+            "icon": "none"
+          }
+        }
+      },
+      "block_order": [
+        "text_xa488F",
+        "text_EMWNJx",
+        "text_43EPnp",
+        "text_bqDVT6",
+        "text_c6tHKP"
+      ],
+      "custom_css": [],
+      "settings": {
+        "repeat_text": true,
+        "link": "",
+        "font": "body",
+        "gap": "gap-36",
+        "icon_size": "size-8",
+        "speed": 120,
+        "direction": "",
+        "icon_thickness": 1.5,
+        "background_color": "bg-transparent text-scheme-text",
+        "show_border": true,
+        "color_scheme": "scheme-86313df5-aadb-4b6f-9d24-8b7f14d30220",
+        "use_gradient_background": false
+      }
+    },
+    "featured_product": {
+      "type": "featured-product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {
+            "display_on_card": false,
+            "text_align": "text-left"
+          }
+        },
+        "price": {
+          "type": "price",
+          "disabled": true,
+          "settings": {
+            "display_on_card": false,
+            "show_on_sale_sticker": false,
+            "text_align": "text-left"
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "display_on_card": false,
+            "option_style": "buttons",
+            "full_width_buttons": false,
+            "hide_option_labels": true,
+            "enable_color_swatches": false
+          }
+        },
+        "description_PiWxLj": {
+          "type": "description",
+          "settings": {
+            "display_on_card": false,
+            "truncate_description": false,
+            "text_align": "text-left"
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "display_on_card": false,
+            "show_price": true,
+            "enable_payment_button": false,
+            "show_pickup_availability": false,
+            "show_gift_card_recipient": false
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "price",
+        "variant_picker",
+        "description_PiWxLj",
+        "buy_buttons"
+      ],
+      "custom_css": [
+        ".add-to-cart-btn > .push-btn__surface {letter-spacing: 1px;}",
+        ".splide__arrow {display: none;}",
+        "fieldset.-mx-color-fieldset-offset {display: none;}"
+      ],
+      "settings": {
+        "title": "",
+        "product": "merino-wool",
+        "crop": "",
+        "image_shape": "default",
+        "media_mobile_width": "w-full",
+        "desktop_media_width": "lg:col-span-6_lg:col-span-6",
+        "enable_video_looping": true,
+        "thumbnails_position": "left",
+        "thumbnail_crop": "",
+        "thumbnail_shape": "default",
+        "hide_media_shadow": false,
+        "thumbnail_size": "standard",
+        "show_thumbnails_on_mobile": true,
+        "color_scheme": "scheme1",
+        "use_gradient_background": false
+      }
+    },
+    "featured_testimonials": {
+      "type": "featured-testimonials",
+      "blocks": {
+        "testimonial_r3n9k7": {
+          "type": "testimonial",
+          "settings": {
+            "rating": "5_stars",
+            "quote": "A quote from a customer or staff member can help show off your products' unique selling points.",
+            "source": "Source"
+          }
+        },
+        "testimonial_GBEyN8": {
+          "type": "testimonial",
+          "settings": {
+            "rating": "5_stars",
+            "quote": "A quote from a customer or staff member can help show off your products' unique selling points.",
+            "source": "Source"
+          }
+        },
+        "testimonial_jnATwG": {
+          "type": "testimonial",
+          "settings": {
+            "rating": "5_stars",
+            "quote": "A quote from a customer or staff member can help show off your products' unique selling points.",
+            "source": "Source"
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_r3n9k7",
+        "testimonial_GBEyN8",
+        "testimonial_jnATwG"
+      ],
+      "custom_css": [
+        ".font-heading {font-family: \"Perfectly Nineties\"; text-transform: none;}",
+        ".heading-secondary {font-family: \"Dallas\";}",
+        ".section--text,.section--rich-text {padding-top: 2px; padding-bottom: 2px;}"
+      ],
+      "settings": {
+        "display_on_card": true,
+        "title": "",
+        "font": "font-heading",
+        "mobile_text_scale": 2,
+        "desktop_text_scale": 4,
+        "source_font": "font-body",
+        "max_width": 100,
+        "disable_media_style": false,
+        "crop": "",
+        "image_shape": "default",
+        "color_scheme": "scheme-cf74536f-16f4-4976-8e66-7c37ce1ed9c2",
+        "use_gradient_background": false
+      }
+    },
+    "features_list_WtMJwa": {
+      "type": "features-list",
+      "blocks": {
+        "list_item_4X8dpm": {
+          "type": "list_item",
+          "settings": {
+            "title": "Product feature text"
+          }
+        },
+        "list_item_rahHA9": {
+          "type": "list_item",
+          "settings": {
+            "title": "Product feature text"
+          }
+        },
+        "list_item_d969jQ": {
+          "type": "list_item",
+          "settings": {
+            "title": "Product feature text"
+          }
+        },
+        "list_item_FXNzDB": {
+          "type": "list_item",
+          "settings": {
+            "title": "Product feature text"
+          }
+        },
+        "list_item_r3ytAb": {
+          "type": "list_item",
+          "settings": {
+            "title": "Product feature text"
+          }
+        },
+        "list_item_7hUqgE": {
+          "type": "list_item",
+          "settings": {
+            "title": "Product feature text"
+          }
+        },
+        "list_item_Y63kRj": {
+          "type": "list_item",
+          "settings": {
+            "title": "Product feature text"
+          }
+        },
+        "list_item_LGdC8x": {
+          "type": "list_item",
+          "settings": {
+            "title": "Product feature text"
+          }
+        }
+      },
+      "block_order": [
+        "list_item_4X8dpm",
+        "list_item_rahHA9",
+        "list_item_d969jQ",
+        "list_item_FXNzDB",
+        "list_item_r3ytAb",
+        "list_item_7hUqgE",
+        "list_item_Y63kRj",
+        "list_item_LGdC8x"
+      ],
+      "disabled": true,
+      "settings": {
+        "title": "Features list",
+        "heading_size": "heading-standard",
+        "button_link": "",
+        "button_label": "Shop Now",
+        "display_on_card": false,
+        "two_columns_desktop": true,
+        "max_width_table": "max-w-2xl",
+        "border_between_rows": true,
+        "border_top_bottom": false,
+        "color_scheme": "scheme3",
+        "use_gradient_background": false
+      }
+    },
+    "176541161944b97521": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_app_block_r4CUQQ": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "MOVE WITH US.",
+            "title_color": "#1a345e",
+            "title_size_v2": 50,
+            "alignment": "left",
+            "instafeed_margin_top": 10,
+            "instafeed_margin_bottom": 20,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": false,
+            "link_alignment": "left",
+            "link_color": "#4f5eff",
+            "background_color": "",
+            "feed_id": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "instafeed_app_block_r4CUQQ"
+      ],
+      "custom_css": [],
+      "settings": {
+        "apply_vertical_spacing": false,
+        "apply_horizontal_spacing": true,
+        "display_on_card": false,
+        "content_width_desktop": "lg:w-full",
+        "color_scheme": "scheme1",
+        "use_gradient_background": false
+      }
+    },
+    "rich_text_gCgaY8": {
+      "type": "rich-text",
+      "disabled": true,
+      "settings": {
+        "title": "Some final headline here",
+        "heading_size": "heading-standard",
+        "rich_text": "<h3>Additional copy here <em>nudging </em>the buyer to <em>start</em> shopping</h3><p><strong>Or use this sans serif font</strong></p>",
+        "display_on_card": false,
+        "content_width_desktop": "lg:w-2/3",
+        "button_link": "shopify://products/merino-wool",
+        "button_label": "Shop Now",
+        "color_scheme": "scheme-430c6038-8c15-4711-a4d5-ce6c88699a21",
+        "use_gradient_background": false
       }
     }
   },
   "order": [
-    "sport_products",
-    "sport_blocks",
-    "music_hero",
-    "music_about",
-    "music_releases",
-    "featured_collection"
+    "dev_hero_rG8Hcz",
+    "dev_feature_bar_KUmyDn",
+    "dev_features_with_image_gWa6Jr",
+    "image_with_text",
+    "rich_text_minqnC",
+    "image_with_highlights",
+    "scrolling_text_with_icons",
+    "featured_product",
+    "featured_testimonials",
+    "features_list_WtMJwa",
+    "176541161944b97521",
+    "rich_text_gCgaY8"
   ]
 }

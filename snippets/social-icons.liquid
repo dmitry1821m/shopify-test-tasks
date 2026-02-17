@@ -1,103 +1,69 @@
-{% comment %}
-  Renders social icons.
-  Accepts:
-  - class: {String} a class to be added to the <ul> element (optional).
-
-  Usage:
-  {% render 'social-icons',
-    class: 'my-class'
-  %}
-{% endcomment %}
-
-<ul class="list-unstyled list-social{% if class %} {{ class}}{% endif %}" role="list">
-  {%- if settings.social_facebook_link != blank -%}
-    <li class="list-social__item">
-      <a href="{{ settings.social_facebook_link }}" class="link list-social__link">
-        <span class="svg-wrapper">
-          {{- 'icon-facebook.svg' | inline_asset_content -}}
-        </span>
-        <span class="visually-hidden">{{ 'general.social.links.facebook' | t }}</span>
-      </a>
-    </li>
-  {%- endif -%}
-  {%- if settings.social_instagram_link != blank -%}
-    <li class="list-social__item">
-      <a href="{{ settings.social_instagram_link }}" class="link list-social__link">
-        <span class="svg-wrapper">
-          {{- 'icon-instagram.svg' | inline_asset_content -}}
-        </span>
-        <span class="visually-hidden">{{ 'general.social.links.instagram' | t }}</span>
-      </a>
-    </li>
-  {%- endif -%}
-  {%- if settings.social_youtube_link != blank -%}
-    <li class="list-social__item">
-      <a href="{{ settings.social_youtube_link }}" class="link list-social__link">
-        <span class="svg-wrapper">
-          {{- 'icon-youtube.svg' | inline_asset_content -}}
-        </span>
-        <span class="visually-hidden">{{ 'general.social.links.youtube' | t }}</span>
-      </a>
-    </li>
-  {%- endif -%}
-  {%- if settings.social_tiktok_link != blank -%}
-    <li class="list-social__item">
-      <a href="{{ settings.social_tiktok_link }}" class="link list-social__link">
-        <span class="svg-wrapper">
-          {{- 'icon-tiktok.svg' | inline_asset_content -}}
-        </span>
-        <span class="visually-hidden">{{ 'general.social.links.tiktok' | t }}</span>
-      </a>
-    </li>
-  {%- endif -%}
-  {%- if settings.social_twitter_link != blank -%}
-    <li class="list-social__item">
-      <a href="{{ settings.social_twitter_link }}" class="link list-social__link">
-        <span class="svg-wrapper">
-          {{- 'icon-twitter.svg' | inline_asset_content -}}
-        </span>
-        <span class="visually-hidden">{{ 'general.social.links.twitter' | t }}</span>
-      </a>
-    </li>
-  {%- endif -%}
-  {%- if settings.social_pinterest_link != blank -%}
-    <li class="list-social__item">
-      <a href="{{ settings.social_pinterest_link }}" class="link list-social__link">
-        <span class="svg-wrapper">
-          {{- 'icon-pinterest.svg' | inline_asset_content -}}
-        </span>
-        <span class="visually-hidden">{{ 'general.social.links.pinterest' | t }}</span>
-      </a>
-    </li>
-  {%- endif -%}
-  {%- if settings.social_snapchat_link != blank -%}
-    <li class="list-social__item">
-      <a href="{{ settings.social_snapchat_link }}" class="link list-social__link">
-        <span class="svg-wrapper">
-          {{- 'icon-snapchat.svg' | inline_asset_content -}}
-        </span>
-        <span class="visually-hidden">{{ 'general.social.links.snapchat' | t }}</span>
-      </a>
-    </li>
-  {%- endif -%}
-  {%- if settings.social_tumblr_link != blank -%}
-    <li class="list-social__item">
-      <a href="{{ settings.social_tumblr_link }}" class="link list-social__link">
-        <span class="svg-wrapper">
-          {{- 'icon-tumblr.svg' | inline_asset_content -}}
-        </span>
-        <span class="visually-hidden">{{ 'general.social.links.tumblr' | t }}</span>
-      </a>
-    </li>
-  {%- endif -%}
-  {%- if settings.social_vimeo_link != blank -%}
-    <li class="list-social__item">
-      <a href="{{ settings.social_vimeo_link }}" class="link list-social__link">
-        <span class="svg-wrapper">
-          {{- 'icon-vimeo.svg' | inline_asset_content -}}
-        </span>
-        <span class="visually-hidden">{{ 'general.social.links.vimeo' | t }}</span>
-      </a>
-    </li>
-  {%- endif -%}
+{%- liquid
+  assign social_accounts = 'Facebook, Twitter, Pinterest, Instagram, Snapchat, TikTok, Tumblr, YouTube, LinkedIn, Threads, WhatsApp, Discord, Twitch, Messenger, Email, Vimeo' | split: ', '
+-%}
+<ul class="-mx-2 -mt-2 flex flex-wrap {{ list_class }}">
+  {% for social in social_accounts %}
+    {%- assign social_handle = social | handleize -%}
+    {% capture social_link %}social_{{ social_handle }}_link{% endcapture %}
+    {% if settings[social_link] != blank %}
+      {% if settings.social_style == 'icons' %}
+        <li class="mx-2 mt-2">
+          <a
+            class="fill-current"
+            href="{% if social_handle == 'email' %}mailto:{% endif %}{{ settings[social_link] }}"
+            target="_blank"
+          >
+            <span class="inline-block h-5 w-5" aria-hidden="true">
+              {%- liquid
+                case social_handle
+                  when 'facebook'
+                    render 'icon-facebook'
+                  when 'twitter'
+                    render 'icon-twitter'
+                  when 'pinterest'
+                    render 'icon-pinterest'
+                  when 'instagram'
+                    render 'icon-instagram'
+                  when 'snapchat'
+                    render 'icon-snapchat'
+                  when 'email'
+                    render 'icon-email'
+                  when 'tumblr'
+                    render 'icon-tumblr'
+                  when 'youtube'
+                    render 'icon-youtube'
+                  when 'linkedin'
+                    render 'icon-linkedin'
+                  when 'tiktok'
+                    render 'icon-tiktok'
+                  when 'threads'
+                    render 'icon-threads'
+                  when 'whatsapp'
+                    render 'icon-whatsapp'
+                  when 'discord'
+                    render 'icon-discord'
+                  when 'twitch'
+                    render 'icon-twitch'
+                  when 'messenger'
+                    render 'icon-messenger'
+                  when 'vimeo'
+                    render 'icon-vimeo'
+                endcase
+              -%}
+            </span>
+            <span class="visually-hidden">{{ social }}</span>
+          </a>
+        </li>
+      {% else %}
+        <li class="mx-2 mt-2">
+          <a
+            class="inline-block {{ link_class }} secondary-text-link"
+            href="{% if social_handle == 'email' %}mailto:{% endif %}{{ settings[social_link] }}"
+          >
+            {{ social }}
+          </a>
+        </li>
+      {% endif %}
+    {% endif %}
+  {% endfor %}
 </ul>

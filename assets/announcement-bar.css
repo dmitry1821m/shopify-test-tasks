@@ -1,0 +1,19 @@
+.announcement-bar-custom {
+  font-family: "Dallas";
+  font-weight: bold;
+}
+
+.announcement-bar-custom a {
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 0.98px;
+  text-transform: uppercase;
+  color: #193561;
+}
+
+.announcement-bar-custom a strong {
+  color: #4f5eff;
+}
