@@ -19,6 +19,19 @@
     {{ page.title | escape }}
   </h1>
   <div class="rte">
+    my_metafield.value.size: {{ page.metafields.custom.my_metafield.value.size }}
+    <br>
+    <br>
+    {% for my_object in page.metafields.custom.my_metafield.value %}
+      my_object.my_object_list.value.size: {{ my_object.my_object_list.value.size }}
+      <br>
+      {% for item in my_object.my_object_list.value %}
+        {{ item }}
+        <br>
+      {% endfor %}
+      <br>
+    {% endfor %}
+    <hr>
     {{ page.content }}
   </div>
 </div>
